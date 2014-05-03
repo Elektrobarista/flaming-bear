@@ -14,7 +14,7 @@ public class CurriculumVitae {
 	}
 	// Wenn eine gültige Email-Adresse übergeben wird konvertierung in Latex-Code
 										// Wirft eine Exception wenn kein "@" vorhanden ist.
-		String writeEMailLine(String email)throws NoEmailException {
+		String writeEMailLine(String email){
 		char[] mail = email.toCharArray();
 		boolean atExist = false ;
 		// Geht den übergebenen String durch und schaut ob "@" vorhanden ist.
@@ -29,7 +29,7 @@ public class CurriculumVitae {
 		}
 		// Fängt die Excetion auf und gibt einen String zurück
 		catch (NoEmailException ex) {
-			return "Keine gültige Email eingegeben";
+			return "Keine gueltige Email eingegeben";
 		}
 		// Ansonsten wird ein String der die Email Darstellung in Latex erzegen soll zurückgegeben.
 		return "\\cvline{\\emailsymbol}{\\href{mailto:" + email +"}{" + email + "}}" ;
