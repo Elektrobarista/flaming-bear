@@ -1,4 +1,3 @@
-
 public class main {
 
 	public static void main(String[] args) {
@@ -15,6 +14,8 @@ public class main {
 		System.out.println (test.convertUmlaut("123äwdsö323ü442ß"));
 		test.writeCV("C:\\Users\\Lars\\test.tex");
 		System.out.println(test.convertUmlaut(s));
+		CurriculumVitae maxMustermann = new CurriculumVitae();
+		maxMustermann.writeCV("C:\\Users\\Lars\\test.tex");
 	}
 
 }
