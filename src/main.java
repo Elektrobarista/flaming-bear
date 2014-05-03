@@ -4,8 +4,8 @@ public class main {
 	public static void main(String[] args) {
 		String s = "Test für außerordentliche Fehler, die ärgerlich enden können. Österreich, Überhaupt Ängste";
 		CurriculumVitae test = new CurriculumVitae();
-		System.out.println (test.writeEMailLine("lars.porth@gmail.com"));
-		System.out.println (test.writeEMailLine("larsporthgmailcom")  );
+		System.out.println (test.writeEmailLine("lars.porth@gmail.com"));
+		System.out.println (test.writeEmailLine("larsporthgmailcom")  );
 		System.out.println (test.writeMobileLine("lars.porth@gmail.com"));
 		System.out.println (test.writeMobileLine("+49 143 229"));
 		System.out.println (test.writeCVLine("lars.porth@gmail.com",""));
