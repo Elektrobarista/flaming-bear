@@ -27,6 +27,21 @@ public class CurriculumVitae {
 				u =u + "\\ss ";
 				continue;
 			}
+			//Umwandlung von 'Ä'
+			if (s.charAt(i)=='Ä'){
+				u =u + "\\\"A";
+				continue;
+			}
+			//Umwandlung von 'Ö'
+			if (s.charAt(i)=='Ö'){
+				u =u + "\\\"O";
+				continue;
+			}			
+			//Umwandlung von 'Ü'
+			if (s.charAt(i)=='Ü'){
+				u =u + "\\\"U";
+				continue;
+			}
 			else{
 				u =u + s.charAt(i);
 			}
