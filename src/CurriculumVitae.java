@@ -1,8 +1,35 @@
 
 public class CurriculumVitae {
-	// Tauscht alle umlaute gegen Latexkonforme COdierung um
-	String convertUmlaut(){
-		return null;
+	// Tauscht alle Umlaute gegen Latexkonforme Codierung um
+	String convertUmlaut(String s){
+		String u="";
+		for (int i = 0; i < s.length(); i++){
+			//Umwandlung von 'ä'
+			if (s.charAt(i)=='ä'){
+				u =u + "\\\"a";
+				continue;
+			}
+			//Umwandlung von 'ö'
+			if (s.charAt(i)=='ö'){
+				u =u + "\\\"o";
+				continue;
+			}			
+			//Umwandlung von 'ü'
+			if (s.charAt(i)=='ü'){
+				u =u + "\\\"u";
+				continue;
+			}
+			//Umwandlung von 'ß'
+			if (s.charAt(i)=='ß'){
+				u =u + "\\ss ";
+				continue;
+			}
+			else{
+				u =u + s.charAt(i);
+			}
+		}
+			
+		return u;
 	}
 	// Erzeugt einen String in dem Latex-Code für persönliche Daten steht. ( Name, Vorname, Bild)
 	String createPersonalData(){
