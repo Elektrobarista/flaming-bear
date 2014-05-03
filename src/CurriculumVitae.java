@@ -70,7 +70,7 @@ public class CurriculumVitae {
 			}
 			File bild = new File(picturePath);
 			// Gibt es eine Bilddatei?
-			if(bild.exists() == false||picturePath.endsWith(".jpg") == false)try{
+			if(bild.exists() == false||picturePath.endsWith(".JPG") == false)try{
 				throw new InvalidPicture();
 			}
 			catch (InvalidPicture e){
@@ -131,7 +131,7 @@ public class CurriculumVitae {
 			return "InvalidEmail:Keine gueltige Email eingegeben";
 		}
 		// Ansonsten wird ein String der die Email Darstellung in Latex erzegen soll zurückgegeben.
-		return "\\cvline{\\emailsymbol}{\\{mailto:" + email +"}{" + email + "}}" ;
+		return "\\cvline{\\emailsymbol}{\\href{mailto:" + email +"}{" + email + "}}" ;
 	}
 	// 2 Strings werden geschrieben.
 	String writeCVLine(String firstString, String secondString){
