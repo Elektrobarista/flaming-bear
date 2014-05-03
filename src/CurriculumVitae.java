@@ -35,8 +35,33 @@ public class CurriculumVitae {
 		return u;
 	}
 	// Erzeugt einen String in dem Latex-Code für persönliche Daten steht. ( Name, Vorname, Bild)
-	String createPersonalData(){
-		return "Test";
+	String createPersonalData(String firstName, String familyName, String picturePath){
+			// Liest Lineseperator aus.
+			String lineSeparator = System.getProperty("line.separator");
+			// Wurde ein Vorname eingegeben?
+			if (firstName == "")try{
+				throw new InvalidName();
+			}
+			catch (InvalidName e){
+				firstName = "InvalidName: Kein Vorname";
+			}
+			// Wurde ein Nachname eingegeben?
+			if (familyName == "")try{
+				throw new InvalidName();
+			}
+			catch (InvalidName e){
+				firstName = "InvalidName: Kein Familienname";
+			}
+			File bild = new File(picturePath);
+			// Gibt es eine Bilddatei?
+			if(bild.exists() == false||picturePath.endsWith(".jpg") == false)try{
+				throw new InvalidPicture();
+			}
+			catch (InvalidPicture e){
+				
+				return "\\firstname{"+firstName+"}"+lineSeparator+"\\familyname{"+familyName+"}";
+			}
+		return "\\firstname{"+firstName+"}"+lineSeparator+"\\familyname{"+familyName+"}"+lineSeparator+"photo[96pt]{"+picturePath+"}";
 	}
 	// Wenn eine gültige Telefonnummer übergeben wird konvertierung in Latex-Code
 	String writeMobileLine(String phoneNumber){
@@ -131,7 +156,9 @@ public class CurriculumVitae {
 			RandomAccessFile curriculumVitae = new RandomAccessFile(datei,"rw");
 			curriculumVitae.writeBytes("%use class moderncv"+lineSeparator +"\\documentclass[11pt,a4paper]{moderncv}"+lineSeparator+lineSeparator+"%language package"+lineSeparator
 											+ "\\usepackage[german]{babel}"+lineSeparator+lineSeparator+"%choosen theme"+lineSeparator+"\\moderncvtheme[blue]{classic}"+lineSeparator);
-			curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData())+lineSeparator);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//Noch hardcoded muss benutzer eingebbar werden
+			curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData("Max","Mustermann",""))+lineSeparator);
 			curriculumVitae.writeBytes(this.convertUmlaut(this.writeEMailLine("maxmusterman@mail.com"))+lineSeparator);
 			curriculumVitae.writeBytes(this.writeMobileLine("+49 1223 231")+lineSeparator);
 			curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry("Studium", "Uni Mainz", "Informatik", "Mathematik", "", "")));
