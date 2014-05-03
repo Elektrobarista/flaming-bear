@@ -30,11 +30,11 @@ public class CurriculumVitae {
 		}
 		// Wenn es sich um keine gültige Eingabe für die Telefonummer gehandelt hat wird eine Exception geschmissen.
 		if (correctNumber == false) try{
-			throw new NoPhoneNumberException();
+			throw new InvalidMobileNumber();
 		}
 		// Die Exception wird aufgefangen und eine Fehlermeldung wird als String zurückgegeben.
-		catch (NoPhoneNumberException ex){
-			return "NoPhoneNumberException:Keine gueltige Telephonnummer";
+		catch (InvalidMobileNumber ex){
+			return "InvalidMobileNumber:Keine gueltige Telephonnummer";
 		}
 		// Ansonsten wird die Telefonnummer mit dem Code für Latex als String zurückgegeben.
 		return "\\cvline{\\mobilesymbol}{" + phoneNumber + "}";
@@ -53,18 +53,24 @@ public class CurriculumVitae {
 		}
 		// Wenn kein "@" vorhanden ist wird eine Exception geworfen
 		if (atExist == false) try {
-			throw new NoEmailException() ;
+			throw new InvalidEmail();
 		}
 		// Fängt die Excetion auf und gibt einen String zurück
-		catch (NoEmailException ex) {
+		catch (InvalidEmail ex) {
 			return "NoEmailException:Keine gueltige Email eingegeben";
 		}
 		// Ansonsten wird ein String der die Email Darstellung in Latex erzegen soll zurückgegeben.
 		return "\\cvline{\\emailsymbol}{\\href{mailto:" + email +"}{" + email + "}}" ;
 	}
 	// 2 Strings werden zusammengefasst.
-	String writeCVLine(){
-		return null;
+	String writeCVLine(String firstString, String secondString){
+		if (secondString == "")try{
+			throw new InvalidCVLine();
+		}
+		catch (InvalidCVLine ex){
+			return "InvalidCVLine:Kein 2. String";
+		}
+		return "\\cvline{" + firstString + "}{" + secondString +"}";
 	}
 	// 6 Strings werden zusammengefasst.
 	String createCVEntry(){
