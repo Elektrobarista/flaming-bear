@@ -5,6 +5,9 @@ public class main {
 		CurriculumVitae test = new CurriculumVitae();
 		System.out.println (test.writeEMailLine("larsporth@gmail.com"));
 		System.out.println (test.writeEMailLine("larsporthgmailcom")  );
+		System.out.println (test.writeMobileLine("larsporth@gmail.com"));
+		System.out.println (test.writeMobileLine("+49 143 229"));
+		
 		
 	}
 
