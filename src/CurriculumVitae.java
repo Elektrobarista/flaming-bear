@@ -1,3 +1,6 @@
+import	java.io.File;
+import	java.io.IOException;	
+import	java.io.RandomAccessFile;	
 
 public class CurriculumVitae {
 	// Tauscht alle Umlaute gegen Latexkonforme Codierung um
@@ -33,7 +36,7 @@ public class CurriculumVitae {
 	}
 	// Erzeugt einen String in dem Latex-Code für persönliche Daten steht. ( Name, Vorname, Bild)
 	String createPersonalData(){
-		return null;
+		return "Test";
 	}
 	// Wenn eine gültige Telefonnummer übergeben wird konvertierung in Latex-Code
 	String writeMobileLine(String phoneNumber){
@@ -84,10 +87,10 @@ public class CurriculumVitae {
 		}
 		// Fängt die Excetion auf und gibt einen String zurück
 		catch (InvalidEmail ex) {
-			return "NoEmailException:Keine gueltige Email eingegeben";
+			return "InvalidEmail:Keine gueltige Email eingegeben";
 		}
 		// Ansonsten wird ein String der die Email Darstellung in Latex erzegen soll zurückgegeben.
-		return "\\cvline{\\emailsymbol}{\\href{mailto:" + email +"}{" + email + "}}" ;
+		return "\\cvline{\\emailsymbol}{\\{mailto:" + email +"}{" + email + "}}" ;
 	}
 	// 2 Strings werden geschrieben.
 	String writeCVLine(String firstString, String secondString){
@@ -101,7 +104,7 @@ public class CurriculumVitae {
 		return "\\cvline{" + firstString + "}{" + secondString +"}";
 	}
 	// 6 Strings werden geschrieben.
-	String createCVEntry(String firstString,String secondString, String thirdString, String fourthString, String fithString, String sixthString){
+	String createCVEntry(String firstString ,String secondString, String thirdString, String fourthString, String fithString, String sixthString){
 		if (firstString == "" || secondString == "") try{
 			throw new InvalidCVEntry();
 		}
@@ -109,5 +112,33 @@ public class CurriculumVitae {
 			return "InvalidCVEntry:Kein 1. String oder 2.String";
 		}
 		return "\\cventry{" + firstString + "}{" + secondString +"}{" + thirdString + "}{" + fourthString +"}{" + fithString + "}{" + sixthString + "}";
+	}
+	// Schreibt die Datei falls vorhanden, schreibbar und vom Typ ".tex".
+	public void writeCV(String path){
+		File datei = new File (path); 
+		// Überprüft ob es die Datei gibt sie schreibbar ist und der Typ ".tex" ist.
+		// Schmeißt eine Exception wenn nicht.
+		if (path.endsWith(".tex") == false || datei.exists() == false || datei.canWrite() == false)try{
+			throw new InvalidFile();
+		}
+		catch (InvalidFile ex){
+			System.out.println("InvalidFile:Datei existtiert nicht oder kann nicht geschrieben werden.");
+		}
+		// Öffnet und beschreibt die Datei.
+		else try {
+			// Liest den Betriebssystemt line Seperator aus.
+			String lineSeparator = System.getProperty("line.separator");
+			RandomAccessFile curriculumVitae = new RandomAccessFile(datei,"rw");
+			curriculumVitae.writeBytes("%use class moderncv"+lineSeparator +"\\documentclass[11pt,a4paper]{moderncv}"+lineSeparator+lineSeparator+"%language package"+lineSeparator
+											+ "\\usepackage[german]{babel}"+lineSeparator+lineSeparator+"%choosen theme"+lineSeparator+"\\moderncvtheme[blue]{classic}"+lineSeparator);
+			curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData())+lineSeparator);
+			curriculumVitae.writeBytes(this.convertUmlaut(this.writeEMailLine("maxmusterman@mail.com"))+lineSeparator);
+			curriculumVitae.writeBytes(this.writeMobileLine("+49 1223 231")+lineSeparator);
+			curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry("Studium", "Uni Mainz", "Informatik", "Mathematik", "", "")));
+			curriculumVitae.close();
+		}
+		catch (IOException e){
+			System.out.println("IOException:Datei nicht gefunden.");
+		}
 	}
 }
