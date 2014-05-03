@@ -1,6 +1,7 @@
 import	java.io.File;
 import	java.io.IOException;	
 import	java.io.RandomAccessFile;	
+import 	java.util.Scanner;
 
 public class CurriculumVitae {
 	// Tauscht alle Umlaute gegen Latexkonforme Codierung um
@@ -112,7 +113,7 @@ public class CurriculumVitae {
 	
 	// Wenn eine gültige Email-Adresse übergeben wird konvertierung in Latex-Code
 		// Wirft eine Exception wenn kein "@" vorhanden ist.
-		String writeEMailLine(String email){
+		String writeEmailLine(String email){
 		char[] mail = email.toCharArray();
 		boolean atExist = false ;
 		// Geht den übergebenen String durch und schaut ob "@" vorhanden ist.
@@ -171,12 +172,30 @@ public class CurriculumVitae {
 			RandomAccessFile curriculumVitae = new RandomAccessFile(datei,"rw");
 			curriculumVitae.writeBytes("%use class moderncv"+lineSeparator +"\\documentclass[11pt,a4paper]{moderncv}"+lineSeparator+lineSeparator+"%language package"+lineSeparator
 											+ "\\usepackage[german]{babel}"+lineSeparator+lineSeparator+"%choosen theme"+lineSeparator+"\\moderncvtheme[blue]{classic}"+lineSeparator);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//Noch hardcoded muss benutzer eingebbar werden
-			curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData("Max","Mustermann",""))+lineSeparator);
-			curriculumVitae.writeBytes(this.convertUmlaut(this.writeEMailLine("maxmusterman@mail.com"))+lineSeparator);
-			curriculumVitae.writeBytes(this.writeMobileLine("+49 1223 231")+lineSeparator);
-			curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry("Studium", "Uni Mainz", "Informatik", "Mathematik", "", "")));
+			// Schreiben der Datei.	
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Vornamen eingeben:");
+			String firstName = scanner.nextLine();
+			System.out.println("Nachname eingeben:");
+			String familyName = scanner.nextLine();
+			System.out.println("Pfad zu einer Bilddatei angebe .jpg (C:\\User\\Pictures\\bild.jpg)");
+			String picturePath = scanner.nextLine();
+			curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData(firstName,familyName,picturePath))+lineSeparator);
+			System.out.println("Email-Adresse eingeben:");
+			String email = scanner.nextLine();
+			curriculumVitae.writeBytes(this.convertUmlaut(this.writeEmailLine(email))+lineSeparator);
+			System.out.println("Telefonnummer eingeben (+49 ...):");
+			String phoneNumber = scanner.nextLine();
+			curriculumVitae.writeBytes(this.writeMobileLine(phoneNumber)+lineSeparator);
+			System.out.println("Ausbildungsinformationen eingeben 6 Felder:");
+			String first = scanner.nextLine();
+			String second = scanner.nextLine();
+			String third = scanner.nextLine();
+			String fourth = scanner.nextLine();
+			String fifth = scanner.nextLine();
+			String sixth = scanner.nextLine();
+			curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(first, second, third, fourth, fifth, sixth)));
+			scanner.close();
 			curriculumVitae.close();
 		}
 		catch (IOException e){
