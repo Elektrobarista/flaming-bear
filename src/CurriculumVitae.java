@@ -62,18 +62,25 @@ public class CurriculumVitae {
 		// Ansonsten wird ein String der die Email Darstellung in Latex erzegen soll zurückgegeben.
 		return "\\cvline{\\emailsymbol}{\\href{mailto:" + email +"}{" + email + "}}" ;
 	}
-	// 2 Strings werden zusammengefasst.
+	// 2 Strings werden geschrieben.
 	String writeCVLine(String firstString, String secondString){
 		if (secondString == "")try{
 			throw new InvalidCVLine();
 		}
+		// Wenn der 2. String leer ist wird eine Exception geworfen.
 		catch (InvalidCVLine ex){
 			return "InvalidCVLine:Kein 2. String";
 		}
 		return "\\cvline{" + firstString + "}{" + secondString +"}";
 	}
-	// 6 Strings werden zusammengefasst.
-	String createCVEntry(){
-		return null;
+	// 6 Strings werden geschrieben.
+	String createCVEntry(String firstString,String secondString, String thirdString, String fourthString, String fithString, String sixthString){
+		if (firstString == "" || secondString == "") try{
+			throw new InvalidCVEntry();
+		}
+		catch (InvalidCVEntry ex){
+			return "InvalidCVEntry:Kein 1. String oder 2.String";
+		}
+		return "\\cventry{" + firstString + "}{" + secondString +"}{" + thirdString + "}{" + fourthString +"}{" + fithString + "}{" + sixthString + "}";
 	}
 }
