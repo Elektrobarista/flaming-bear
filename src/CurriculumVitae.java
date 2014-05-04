@@ -68,16 +68,36 @@ public class CurriculumVitae {
 			catch (InvalidName e){
 				firstName = "InvalidName: Kein Familienname";
 			}
-			File bild = new File(picturePath);
+			String latexPath = "";
+			for (int i = 0; i < picturePath.length(); i++){
+				//Umwandlung von '\' für Latex
+				if (picturePath.charAt(i)=='\\'){
+					latexPath = latexPath + "\\\\";
+				}
+				else{
+					latexPath = latexPath + picturePath.charAt(i);
+				}
+			}
+			File bild = new File(latexPath);
 			// Gibt es eine Bilddatei?
-			if(bild.exists() == false||picturePath.endsWith(".JPG") == false)try{
+			if(bild.exists() == false||(picturePath.endsWith(".JPG") == false && picturePath.endsWith(".jpg") == false))try{
 				throw new InvalidPicture();
 			}
 			catch (InvalidPicture e){
 				
 				return "\\firstname{"+firstName+"}"+lineSeparator+"\\familyname{"+familyName+"}";
 			}
-		return "\\firstname{"+firstName+"}"+lineSeparator+"\\familyname{"+familyName+"}"+lineSeparator+"photo[96pt]{"+picturePath+"}";
+			latexPath = "";
+			for (int i = 0; i < picturePath.length(); i++){
+				//Umwandlung von '\' für Latex
+				if (picturePath.charAt(i)=='\\'){
+					latexPath = latexPath + "/";
+				}
+				else{
+					latexPath = latexPath + picturePath.charAt(i);
+				}
+			}		
+		return "\\firstname{"+firstName+"}"+lineSeparator+"\\familyname{"+familyName+"}"+lineSeparator+"\\photo[96pt]{"+latexPath+"}";
 	}
 	// Wenn eine gültige Telefonnummer übergeben wird konvertierung in Latex-Code
 	String writeMobileLine(String phoneNumber){
@@ -196,6 +216,7 @@ public class CurriculumVitae {
 			String sixth = scanner.nextLine();
 			curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(first, second, third, fourth, fifth, sixth)));
 			scanner.close();
+			curriculumVitae.close();
 			curriculumVitae.close();
 		}
 		catch (IOException e){
