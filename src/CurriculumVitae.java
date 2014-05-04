@@ -70,7 +70,7 @@ public class CurriculumVitae {
 			}
 			String latexPath = "";
 			for (int i = 0; i < picturePath.length(); i++){
-				//Umwandlung von '\' für Latex
+				//Umwandlung von '\' bei Windows in '\\'
 				if (picturePath.charAt(i)=='\\'){
 					latexPath = latexPath + "\\\\";
 				}
@@ -179,48 +179,69 @@ public class CurriculumVitae {
 		File datei = new File (path); 
 		// Überprüft ob es die Datei gibt sie schreibbar ist und der Typ ".tex" ist.
 		// Schmeißt eine Exception wenn nicht.
-		if (path.endsWith(".tex") == false || datei.exists() == false || datei.canWrite() == false)try{
+		if (path.endsWith(".tex") == false)try{
 			throw new InvalidFile();
 		}
 		catch (InvalidFile ex){
 			System.out.println("InvalidFile:Datei existtiert nicht oder kann nicht geschrieben werden.");
 		}
 		// Öffnet und beschreibt die Datei.
-		else try {
-			// Liest den Betriebssystemt line Seperator aus.
-			String lineSeparator = System.getProperty("line.separator");
-			RandomAccessFile curriculumVitae = new RandomAccessFile(datei,"rw");
-			curriculumVitae.writeBytes("%use class moderncv"+lineSeparator +"\\documentclass[11pt,a4paper]{moderncv}"+lineSeparator+lineSeparator+"%language package"+lineSeparator
+		else try{
+			datei.createNewFile();
+			if (datei.exists() == false || datei.canWrite() == false)try{
+				throw new InvalidFile();
+			}
+			catch (InvalidFile ex){
+				System.out.println("InvalidFile:Datei existtiert nicht oder kann nicht geschrieben werden.");
+			}
+			else try{
+				
+			
+				// Liest den Betriebssystemt line Seperator aus.
+				String lineSeparator = System.getProperty("line.separator");
+				RandomAccessFile curriculumVitae = new RandomAccessFile(datei,"rw");
+				curriculumVitae.writeBytes("%use class moderncv"+lineSeparator +"\\documentclass[11pt,a4paper]{moderncv}"+lineSeparator+lineSeparator+"%language package"+lineSeparator
 											+ "\\usepackage[german]{babel}"+lineSeparator+lineSeparator+"%choosen theme"+lineSeparator+"\\moderncvtheme[blue]{classic}"+lineSeparator);
-			// Schreiben der Datei.	
-			Scanner scanner = new Scanner(System.in);
-			System.out.println("Vornamen eingeben:");
-			String firstName = scanner.nextLine();
-			System.out.println("Nachname eingeben:");
-			String familyName = scanner.nextLine();
-			System.out.println("Pfad zu einer Bilddatei angebe .jpg (C:\\User\\Pictures\\bild.jpg)");
-			String picturePath = scanner.nextLine();
-			curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData(firstName,familyName,picturePath))+lineSeparator);
-			System.out.println("Email-Adresse eingeben:");
-			String email = scanner.nextLine();
-			curriculumVitae.writeBytes(this.convertUmlaut(this.writeEmailLine(email))+lineSeparator);
-			System.out.println("Telefonnummer eingeben (+49 ...):");
-			String phoneNumber = scanner.nextLine();
-			curriculumVitae.writeBytes(this.writeMobileLine(phoneNumber)+lineSeparator);
-			System.out.println("Ausbildungsinformationen eingeben 6 Felder:");
-			String first = scanner.nextLine();
-			String second = scanner.nextLine();
-			String third = scanner.nextLine();
-			String fourth = scanner.nextLine();
-			String fifth = scanner.nextLine();
-			String sixth = scanner.nextLine();
-			curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(first, second, third, fourth, fifth, sixth)));
-			scanner.close();
-			curriculumVitae.close();
-			curriculumVitae.close();
+				// Schreiben der Datei.	
+				Scanner scanner = new Scanner(System.in);
+				System.out.println("Vornamen eingeben:");
+				String firstName = scanner.nextLine();
+				System.out.println("Nachname eingeben:");
+				String familyName = scanner.nextLine();
+				System.out.println("Pfad zu einer Bilddatei angeben .jpg (C:\\User\\Pictures\\bild.jpg)");
+				String picturePath = scanner.nextLine();
+				curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData(firstName,familyName,picturePath))+lineSeparator);
+				curriculumVitae.writeBytes("\\begin{document}"+lineSeparator+"\\maketitle"+lineSeparator+"\\section{Komtaktdaten}"+lineSeparator);
+				System.out.println("Adresse eingeben:(Straße 12)(123 Wohnort)");
+				String street = scanner.nextLine();
+				String city = scanner.nextLine();
+				curriculumVitae.writeBytes(this.convertUmlaut(this.writeCVLine(street, city))+lineSeparator);
+				System.out.println("Email-Adresse eingeben:");
+				String email = scanner.nextLine();
+				curriculumVitae.writeBytes(this.convertUmlaut(this.writeEmailLine(email))+lineSeparator);
+				System.out.println("Telefonnummer eingeben (+49 ...):");
+				String phoneNumber = scanner.nextLine();
+				curriculumVitae.writeBytes(this.writeMobileLine(phoneNumber)+lineSeparator);
+				curriculumVitae.writeBytes("\\section{Ausbildung}"+lineSeparator);
+				System.out.println("Ausbildungsinformationen eingeben 6 Felder:");
+				String first = scanner.nextLine();
+				String second = scanner.nextLine();
+				String third = scanner.nextLine();
+				String fourth = scanner.nextLine();
+				String fifth = scanner.nextLine();
+				String sixth = scanner.nextLine();
+				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(first, second, third, fourth, fifth, sixth))+lineSeparator);
+				scanner.close();
+				curriculumVitae.writeBytes("\\end{document}");
+				curriculumVitae.close();
+			}
+		
+			catch (IOException e){
+				System.out.println("IOException:Datei nicht gefunden.");
+			}
 		}
 		catch (IOException e){
-			System.out.println("IOException:Datei nicht gefunden.");
+			System.out.println("Fehler Datei kann nicht erstellt werde.");
 		}
 	}
 }
