@@ -187,6 +187,8 @@ public class CurriculumVitae {
 		}
 		// Öffnet und beschreibt die Datei.
 		else try{
+			File dateiPfad = new File(path.replaceAll(datei.getName(),""));
+			dateiPfad.mkdirs();
 			datei.createNewFile();
 			if (datei.exists() == false || datei.canWrite() == false)try{
 				throw new InvalidFile();
