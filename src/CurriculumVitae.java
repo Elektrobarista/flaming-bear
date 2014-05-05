@@ -5,51 +5,17 @@ import 	java.util.Scanner;
 
 public class CurriculumVitae {
 	// Tauscht alle Umlaute gegen Latexkonforme Codierung um
-	String convertUmlaut(String s){
-		String u="";
-		for (int i = 0; i < s.length(); i++){
-			//Umwandlung von 'ä'
-			if (s.charAt(i)=='ä'){
-				u =u + "\\\"a";
-				continue;
-			}
-			//Umwandlung von 'ö'
-			if (s.charAt(i)=='ö'){
-				u =u + "\\\"o";
-				continue;
-			}			
-			//Umwandlung von 'ü'
-			if (s.charAt(i)=='ü'){
-				u =u + "\\\"u";
-				continue;
-			}
-			//Umwandlung von 'ß'
-			if (s.charAt(i)=='ß'){
-				u =u + "\\ss ";
-				continue;
-			}
-			//Umwandlung von 'Ä'
-			if (s.charAt(i)=='Ä'){
-				u =u + "\\\"A";
-				continue;
-			}
-			//Umwandlung von 'Ö'
-			if (s.charAt(i)=='Ö'){
-				u =u + "\\\"O";
-				continue;
-			}			
-			//Umwandlung von 'Ü'
-			if (s.charAt(i)=='Ü'){
-				u =u + "\\\"U";
-				continue;
-			}
-			else{
-				u =u + s.charAt(i);
-			}
-		}
-			
-		return u;
+	String convertUmlaut(String convert){
+		convert = convert.replaceAll("ä", "\\\\\"a");
+		convert = convert.replaceAll("ü", "\\\\\"u");
+		convert = convert.replaceAll("ö", "\\\\\"o");
+		convert = convert.replaceAll("Ä", "\\\\\"A");
+		convert = convert.replaceAll("Ü", "\\\\\"U");
+		convert = convert.replaceAll("Ö", "\\\\\"O");
+		convert = convert.replaceAll("ß", "\\\\\"ss");
+		return convert;
 	}
+	
 	// Erzeugt einen String in dem Latex-Code für persönliche Daten steht. ( Name, Vorname, Bild)
 	String createPersonalData(String firstName, String familyName, String picturePath){
 			// Liest Lineseperator aus.
