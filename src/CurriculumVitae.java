@@ -4,6 +4,12 @@ import	java.io.RandomAccessFile;
 import 	java.util.Scanner;
 
 public class CurriculumVitae {
+	// KLassenvariablen
+	String phoneNumber = new String();
+	String email = new String();
+	String[] personalData = new String [3];
+	String[] [] education = new String[2] [6];
+	
 	// Tauscht alle Umlaute gegen Latexkonforme Codierung um
 	String convertUmlaut(String convert){
 		convert = convert.replaceAll("ä", "\\\\\"a");
@@ -17,18 +23,15 @@ public class CurriculumVitae {
 	}
 	
 	// Erzeugt einen String in dem Latex-Code für persönliche Daten steht. ( Name, Vorname, Bild)
-	String createPersonalData(String firstName, String familyName, String picturePath){
+	String createPersonalData(String firstName, String familyName, String picturePath) throws InvalidName ,InvalidPicture{
 			// Liest Lineseperator aus.
 			String lineSeparator = System.getProperty("line.separator");
 			// Wurde ein Vorname eingegeben?
-			if (firstName == "")try{
+			if (firstName.equals("") == true){
 				throw new InvalidName();
 			}
-			catch (InvalidName e){
-				firstName = "InvalidName: Kein Vorname";
-			}
 			// Wurde ein Nachname eingegeben?
-			if (familyName == "")try{
+			if (familyName.equals("") == true)try{
 				throw new InvalidName();
 			}
 			catch (InvalidName e){
@@ -46,12 +49,8 @@ public class CurriculumVitae {
 			}
 			File bild = new File(latexPath);
 			// Gibt es eine Bilddatei?
-			if(bild.exists() == false||(picturePath.endsWith(".JPG") == false && picturePath.endsWith(".jpg") == false))try{
+			if(bild.exists() == false||(picturePath.endsWith(".JPG") == false && picturePath.endsWith(".jpg") == false)){
 				throw new InvalidPicture();
-			}
-			catch (InvalidPicture e){
-				
-				return "\\firstname{"+firstName+"}"+lineSeparator+"\\familyname{"+familyName+"}";
 			}
 			latexPath = "";
 			for (int i = 0; i < picturePath.length(); i++){
@@ -66,8 +65,8 @@ public class CurriculumVitae {
 		return "\\firstname{"+firstName+"}"+lineSeparator+"\\familyname{"+familyName+"}"+lineSeparator+"\\photo[96pt]{"+latexPath+"}";
 	}
 	// Wenn eine gültige Telefonnummer übergeben wird konvertierung in Latex-Code
-	String writeMobileLine(String phoneNumber){
-		char[] number = phoneNumber.toCharArray();
+	String writeMobileLine()throws InvalidMobileNumber{
+		char[] number = this.phoneNumber.toCharArray();
 		boolean correctNumber = false;
 		// Wenn kein "+" den String anführt ist es keien gültige Eingabe. 
 		if (number[0] == '+'){
@@ -86,21 +85,17 @@ public class CurriculumVitae {
 			}		
 		}
 		// Wenn es sich um keine gültige Eingabe für die Telefonummer gehandelt hat wird eine Exception geschmissen.
-		if (correctNumber == false) try{
+		if (correctNumber == false){
 			throw new InvalidMobileNumber();
 		}
-		// Die Exception wird aufgefangen und eine Fehlermeldung wird als String zurückgegeben.
-		catch (InvalidMobileNumber ex){
-			return "InvalidMobileNumber:Keine gueltige Telephonnummer";
-		}
-		// Ansonsten wird die Telefonnummer mit dem Code für Latex als String zurückgegeben.
-		return "\\cvline{\\mobilesymbol}{" + phoneNumber + "}";
+		// Die Telefonnummer mit dem Code für Latex als String zurückgegeben.
+		return this.writeCVLine("\\mobilesymbol", this.phoneNumber);
 	}
 	
 	// Wenn eine gültige Email-Adresse übergeben wird konvertierung in Latex-Code
 		// Wirft eine Exception wenn kein "@" vorhanden ist.
-		String writeEmailLine(String email){
-		char[] mail = email.toCharArray();
+		String writeEmailLine(){
+		char[] mail = this.email.toCharArray();
 		boolean atExist = false ;
 		// Geht den übergebenen String durch und schaut ob "@" vorhanden ist.
 		for (int i = 0 ; i < mail.length ; i++){
@@ -117,22 +112,18 @@ public class CurriculumVitae {
 			return "InvalidEmail:Keine gueltige Email eingegeben";
 		}
 		// Ansonsten wird ein String der die Email Darstellung in Latex erzegen soll zurückgegeben.
-		return "\\cvline{\\emailsymbol}{\\href{mailto:" + email +"}{" + email + "}}" ;
+		return this.writeCVLine("\\emailsymbol", "\\href{mailto:" + this.email +"}{" + this.email + "");
 	}
 	// 2 Strings werden geschrieben.
-	String writeCVLine(String firstString, String secondString){
-		if (secondString == "")try{
+	String writeCVLine(String firstString, String secondString)throws InvalidCVLine{
+		if (secondString.equals("") == true){
 			throw new InvalidCVLine();
-		}
-		// Wenn der 2. String leer ist wird eine Exception geworfen.
-		catch (InvalidCVLine ex){
-			return "InvalidCVLine:Kein 2. String";
 		}
 		return "\\cvline{" + firstString + "}{" + secondString +"}";
 	}
 	// 6 Strings werden geschrieben.
 	String createCVEntry(String firstString ,String secondString, String thirdString, String fourthString, String fithString, String sixthString){
-		if (firstString == "" || secondString == "") try{
+		if (firstString.equals("") == true || secondString.equals("") == true) try{
 			throw new InvalidCVEntry();
 		}
 		catch (InvalidCVEntry ex){
@@ -149,7 +140,7 @@ public class CurriculumVitae {
 			throw new InvalidFile();
 		}
 		catch (InvalidFile ex){
-			System.out.println("InvalidFile:Datei existtiert nicht oder kann nicht geschrieben werden.");
+			System.out.println("InvalidFile:Datei existiert nicht oder kann nicht geschrieben werden.");
 		}
 		// Öffnet und beschreibt die Datei.
 		else try{
@@ -186,10 +177,10 @@ public class CurriculumVitae {
 				curriculumVitae.writeBytes(this.convertUmlaut(this.writeCVLine(street, city))+lineSeparator);
 				System.out.println("Email-Adresse eingeben:");
 				String email = scanner.nextLine();
-				curriculumVitae.writeBytes(this.convertUmlaut(this.writeEmailLine(email))+lineSeparator);
+				curriculumVitae.writeBytes(this.convertUmlaut(this.writeEmailLine())+lineSeparator);
 				System.out.println("Telefonnummer eingeben (+49 ...):");
 				String phoneNumber = scanner.nextLine();
-				curriculumVitae.writeBytes(this.writeMobileLine(phoneNumber)+lineSeparator);
+				curriculumVitae.writeBytes(this.writeMobileLine()+lineSeparator);
 				curriculumVitae.writeBytes("\\section{Ausbildung}"+lineSeparator);
 				System.out.println("Ausbildungsinformationen eingeben 6 Felder:");
 				String first = scanner.nextLine();
