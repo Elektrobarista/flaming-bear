@@ -8,7 +8,10 @@ public class CurriculumVitae {
 	String phoneNumber = new String();
 	String email = new String();
 	String[] personalData = new String [3];
-	String[] [] education = new String[2] [6];
+	String[] [] education = new String [2] [6];
+	String[] adress = new String [2];
+	String[] [] language = new String [2] [6];
+	RandomAccessFile curriculumVitae;
 	
 	// Tauscht alle Umlaute gegen Latexkonforme Codierung um
 	String convertUmlaut(String convert){
@@ -23,46 +26,43 @@ public class CurriculumVitae {
 	}
 	
 	// Erzeugt einen String in dem Latex-Code für persönliche Daten steht. ( Name, Vorname, Bild)
-	String createPersonalData(String firstName, String familyName, String picturePath) throws InvalidName ,InvalidPicture{
+	String createPersonalData() throws InvalidName ,InvalidPicture{
 			// Liest Lineseperator aus.
 			String lineSeparator = System.getProperty("line.separator");
 			// Wurde ein Vorname eingegeben?
-			if (firstName.equals("") == true){
+			if (personalData[0].equals("") == true){
 				throw new InvalidName();
 			}
 			// Wurde ein Nachname eingegeben?
-			if (familyName.equals("") == true)try{
+			if (personalData[1].equals("") == true){
 				throw new InvalidName();
 			}
-			catch (InvalidName e){
-				firstName = "InvalidName: Kein Familienname";
-			}
 			String latexPath = "";
-			for (int i = 0; i < picturePath.length(); i++){
+			for (int i = 0; i < personalData[2].length(); i++){
 				//Umwandlung von '\' bei Windows in '\\'
-				if (picturePath.charAt(i)=='\\'){
+				if (personalData[2].charAt(i)=='\\'){
 					latexPath = latexPath + "\\\\";
 				}
 				else{
-					latexPath = latexPath + picturePath.charAt(i);
+					latexPath = latexPath + personalData[2].charAt(i);
 				}
 			}
 			File bild = new File(latexPath);
 			// Gibt es eine Bilddatei?
-			if(bild.exists() == false||(picturePath.endsWith(".JPG") == false && picturePath.endsWith(".jpg") == false)){
+			if(bild.exists() == false||(personalData[2].endsWith(".JPG") == false && personalData[2].endsWith(".jpg") == false)){
 				throw new InvalidPicture();
 			}
 			latexPath = "";
-			for (int i = 0; i < picturePath.length(); i++){
+			for (int i = 0; i < personalData[2].length(); i++){
 				//Umwandlung von '\' für Latex
-				if (picturePath.charAt(i)=='\\'){
+				if (personalData[2].charAt(i)=='\\'){
 					latexPath = latexPath + "/";
 				}
 				else{
-					latexPath = latexPath + picturePath.charAt(i);
+					latexPath = latexPath + personalData[2].charAt(i);
 				}
 			}		
-		return "\\firstname{"+firstName+"}"+lineSeparator+"\\familyname{"+familyName+"}"+lineSeparator+"\\photo[96pt]{"+latexPath+"}";
+		return "\\firstname{"+personalData[0]+"}"+lineSeparator+"\\familyname{"+personalData[1]+"}"+lineSeparator+"\\photo[96pt]{"+latexPath+"}";
 	}
 	// Wenn eine gültige Telefonnummer übergeben wird konvertierung in Latex-Code
 	String writeMobileLine()throws InvalidMobileNumber{
@@ -89,12 +89,12 @@ public class CurriculumVitae {
 			throw new InvalidMobileNumber();
 		}
 		// Die Telefonnummer mit dem Code für Latex als String zurückgegeben.
-		return this.writeCVLine("\\mobilesymbol", this.phoneNumber);
+		return "\\cvline{\\mobilesymbol}{this.phoneNumber}";
 	}
 	
 	// Wenn eine gültige Email-Adresse übergeben wird konvertierung in Latex-Code
 		// Wirft eine Exception wenn kein "@" vorhanden ist.
-		String writeEmailLine(){
+		String writeEmailLine()throws InvalidEmail{
 		char[] mail = this.email.toCharArray();
 		boolean atExist = false ;
 		// Geht den übergebenen String durch und schaut ob "@" vorhanden ist.
@@ -104,15 +104,11 @@ public class CurriculumVitae {
 			}	
 		}
 		// Wenn kein "@" vorhanden ist wird eine Exception geworfen
-		if (atExist == false) try {
+		if (atExist == false){
 			throw new InvalidEmail();
 		}
-		// Fängt die Excetion auf und gibt einen String zurück
-		catch (InvalidEmail ex) {
-			return "InvalidEmail:Keine gueltige Email eingegeben";
-		}
 		// Ansonsten wird ein String der die Email Darstellung in Latex erzegen soll zurückgegeben.
-		return this.writeCVLine("\\emailsymbol", "\\href{mailto:" + this.email +"}{" + this.email + "");
+		return "\\cvline{\\emailsymbol}{\\href{mailto:" + this.email +"}{" + this.email + "}}";
 	}
 	// 2 Strings werden geschrieben.
 	String writeCVLine(String firstString, String secondString)throws InvalidCVLine{
@@ -122,14 +118,11 @@ public class CurriculumVitae {
 		return "\\cvline{" + firstString + "}{" + secondString +"}";
 	}
 	// 6 Strings werden geschrieben.
-	String createCVEntry(String firstString ,String secondString, String thirdString, String fourthString, String fithString, String sixthString){
-		if (firstString.equals("") == true || secondString.equals("") == true) try{
+	String createCVEntry(String[] cvEntry)throws InvalidCVEntry{
+		if (cvEntry[0].equals("") == true || cvEntry[1].equals("") == true){
 			throw new InvalidCVEntry();
 		}
-		catch (InvalidCVEntry ex){
-			return "InvalidCVEntry:Kein 1. String oder 2.String";
-		}
-		return "\\cventry{" + firstString + "}{" + secondString +"}{" + thirdString + "}{" + fourthString +"}{" + fithString + "}{" + sixthString + "}";
+		return "\\cventry{" + cvEntry[0] + "}{" + cvEntry[1] +"}{" + cvEntry[2] + "}{" + cvEntry[3] +"}{" + cvEntry[4] + "}{" + cvEntry[5] + "}";
 	}
 	// Schreibt die Datei falls vorhanden, schreibbar und vom Typ ".tex".
 	public void writeCV(String path){
@@ -140,7 +133,7 @@ public class CurriculumVitae {
 			throw new InvalidFile();
 		}
 		catch (InvalidFile ex){
-			System.out.println("InvalidFile:Datei existiert nicht oder kann nicht geschrieben werden.");
+			System.out.println("InvalidFile:Datei existtiert nicht oder kann nicht geschrieben werden.");
 		}
 		// Öffnet und beschreibt die Datei.
 		else try{
@@ -159,45 +152,50 @@ public class CurriculumVitae {
 				// Liest den Betriebssystemt line Seperator aus.
 				String lineSeparator = System.getProperty("line.separator");
 				RandomAccessFile curriculumVitae = new RandomAccessFile(datei,"rw");
+				//Schreibt Anfang des Latex DOKUMENTS
 				curriculumVitae.writeBytes("%use class moderncv"+lineSeparator +"\\documentclass[11pt,a4paper]{moderncv}"+lineSeparator+lineSeparator+"%language package"+lineSeparator
 											+ "\\usepackage[german]{babel}"+lineSeparator+lineSeparator+"%choosen theme"+lineSeparator+"\\moderncvtheme[blue]{classic}"+lineSeparator);
 				// Schreiben der Datei.	
-				Scanner scanner = new Scanner(System.in);
-				System.out.println("Vornamen eingeben:");
-				String firstName = scanner.nextLine();
-				System.out.println("Nachname eingeben:");
-				String familyName = scanner.nextLine();
-				System.out.println("Pfad zu einer Bilddatei angeben .jpg (C:\\User\\Pictures\\bild.jpg)");
-				String picturePath = scanner.nextLine();
-				curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData(firstName,familyName,picturePath))+lineSeparator);
+				{
+				curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData())+lineSeparator);
+				}
 				curriculumVitae.writeBytes("\\begin{document}"+lineSeparator+"\\maketitle"+lineSeparator+"\\section{Komtaktdaten}"+lineSeparator);
-				System.out.println("Adresse eingeben:(Straße 12)(123 Wohnort)");
-				String street = scanner.nextLine();
-				String city = scanner.nextLine();
-				curriculumVitae.writeBytes(this.convertUmlaut(this.writeCVLine(street, city))+lineSeparator);
-				System.out.println("Email-Adresse eingeben:");
-				String email = scanner.nextLine();
+				curriculumVitae.writeBytes(this.convertUmlaut(this.writeCVLine("",adress[0]))+lineSeparator);
+				curriculumVitae.writeBytes(this.convertUmlaut(this.writeCVLine("",adress[1]))+lineSeparator);
 				curriculumVitae.writeBytes(this.convertUmlaut(this.writeEmailLine())+lineSeparator);
-				System.out.println("Telefonnummer eingeben (+49 ...):");
-				String phoneNumber = scanner.nextLine();
 				curriculumVitae.writeBytes(this.writeMobileLine()+lineSeparator);
 				curriculumVitae.writeBytes("\\section{Ausbildung}"+lineSeparator);
-				System.out.println("Ausbildungsinformationen eingeben 6 Felder:");
-				String first = scanner.nextLine();
-				String second = scanner.nextLine();
-				String third = scanner.nextLine();
-				String fourth = scanner.nextLine();
-				String fifth = scanner.nextLine();
-				String sixth = scanner.nextLine();
-				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(first, second, third, fourth, fifth, sixth))+lineSeparator);
-				scanner.close();
+				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(education[0]))+lineSeparator);
+				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(education[1]))+lineSeparator);
+				curriculumVitae.writeBytes("\\section{Sprachen}"+lineSeparator);
+				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(language[0]))+lineSeparator);
+				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(language[1]))+lineSeparator);
 				curriculumVitae.writeBytes("\\end{document}");
 				curriculumVitae.close();
 			}
-		
+			//Exceptons werden abgefangen
+			catch(InvalidMobileNumber e){
+				curriculumVitae.writeBytes("InvalidMobileNumber:Kein zweiter eintrag.");
+			}
+			catch(InvalidEmail e){
+				curriculumVitae.writeBytes("InvalidEmail:Kein zweiter eintrag.");
+			}
+			catch(InvalidCVLine e){
+				curriculumVitae.writeBytes("InvalidCVLine:Kein zweiter eintrag.");
+			}
+			catch(InvalidCVEntry e){
+				curriculumVitae.writeBytes("InvalidCVEntry:Kein erster oder zweiter eintrag.");
+			}
+			catch(InvalidPicture e){
+				curriculumVitae.writeBytes("InvalidPicture:Kein Bild gefunden.");
+			}
+			catch(InvalidName e){
+				curriculumVitae.writeBytes("InvalidName:Kein Vor oder Nachnahme eingegeben.");
+			}
 			catch (IOException e){
 				System.out.println("IOException:Datei nicht gefunden.");
 			}
+			curriculumVitae.close();
 		}
 		catch (IOException e){
 			System.out.println("Fehler Datei kann nicht erstellt werde.");
