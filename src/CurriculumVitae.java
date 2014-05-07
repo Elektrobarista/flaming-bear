@@ -1,7 +1,6 @@
 import	java.io.File;
 import	java.io.IOException;	
 import	java.io.RandomAccessFile;	
-import 	java.util.Scanner;
 
 public class CurriculumVitae {
 	// KLassenvariablen
@@ -21,7 +20,7 @@ public class CurriculumVitae {
 		convert = convert.replaceAll("Ä", "\\\\\"A");
 		convert = convert.replaceAll("Ü", "\\\\\"U");
 		convert = convert.replaceAll("Ö", "\\\\\"O");
-		convert = convert.replaceAll("ß", "\\\\\"ss");
+		convert = convert.replaceAll("ß", "\\\\ss ");
 		return convert;
 	}
 	
@@ -36,6 +35,9 @@ public class CurriculumVitae {
 			// Wurde ein Nachname eingegeben?
 			if (personalData[1].equals("") == true){
 				throw new InvalidName();
+			}
+			if (personalData[2].equals("") == true){
+				return "\\firstname{"+personalData[0]+"}"+lineSeparator+"\\familyname{"+personalData[1]+"}";
 			}
 			String latexPath = "";
 			for (int i = 0; i < personalData[2].length(); i++){
@@ -89,7 +91,7 @@ public class CurriculumVitae {
 			throw new InvalidMobileNumber();
 		}
 		// Die Telefonnummer mit dem Code für Latex als String zurückgegeben.
-		return "\\cvline{\\mobilesymbol}{this.phoneNumber}";
+		return "\\cvline{\\mobilesymbol}{"+this.phoneNumber+"}";
 	}
 	
 	// Wenn eine gültige Email-Adresse übergeben wird konvertierung in Latex-Code
@@ -151,14 +153,12 @@ public class CurriculumVitae {
 			
 				// Liest den Betriebssystemt line Seperator aus.
 				String lineSeparator = System.getProperty("line.separator");
-				RandomAccessFile curriculumVitae = new RandomAccessFile(datei,"rw");
+				this.curriculumVitae = new RandomAccessFile(datei,"rw");
 				//Schreibt Anfang des Latex DOKUMENTS
 				curriculumVitae.writeBytes("%use class moderncv"+lineSeparator +"\\documentclass[11pt,a4paper]{moderncv}"+lineSeparator+lineSeparator+"%language package"+lineSeparator
 											+ "\\usepackage[german]{babel}"+lineSeparator+lineSeparator+"%choosen theme"+lineSeparator+"\\moderncvtheme[blue]{classic}"+lineSeparator);
 				// Schreiben der Datei.	
-				{
 				curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData())+lineSeparator);
-				}
 				curriculumVitae.writeBytes("\\begin{document}"+lineSeparator+"\\maketitle"+lineSeparator+"\\section{Komtaktdaten}"+lineSeparator);
 				curriculumVitae.writeBytes(this.convertUmlaut(this.writeCVLine("",adress[0]))+lineSeparator);
 				curriculumVitae.writeBytes(this.convertUmlaut(this.writeCVLine("",adress[1]))+lineSeparator);
@@ -173,30 +173,31 @@ public class CurriculumVitae {
 				curriculumVitae.writeBytes("\\end{document}");
 				curriculumVitae.close();
 			}
-			//Exceptons werden abgefangen
-			catch(InvalidMobileNumber e){
-				curriculumVitae.writeBytes("InvalidMobileNumber:Kein zweiter eintrag.");
-			}
-			catch(InvalidEmail e){
-				curriculumVitae.writeBytes("InvalidEmail:Kein zweiter eintrag.");
-			}
-			catch(InvalidCVLine e){
-				curriculumVitae.writeBytes("InvalidCVLine:Kein zweiter eintrag.");
-			}
-			catch(InvalidCVEntry e){
-				curriculumVitae.writeBytes("InvalidCVEntry:Kein erster oder zweiter eintrag.");
-			}
-			catch(InvalidPicture e){
-				curriculumVitae.writeBytes("InvalidPicture:Kein Bild gefunden.");
-			}
-			catch(InvalidName e){
-				curriculumVitae.writeBytes("InvalidName:Kein Vor oder Nachnahme eingegeben.");
-			}
-			catch (IOException e){
-				System.out.println("IOException:Datei nicht gefunden.");
-			}
-			curriculumVitae.close();
-		}
+				//Exceptons werden abgefangen
+				catch(InvalidMobileNumber e){
+					curriculumVitae.writeBytes("InvalidMobileNumber:Keine g\"ultige Telefonnummer.");
+				}
+				catch(InvalidEmail e){
+					curriculumVitae.writeBytes("InvalidEmail:Keine g\"ultige Email-Adresse");
+				}
+				catch(InvalidCVLine e){
+					curriculumVitae.writeBytes("InvalidCVLine:Kein zweiter eintrag.");
+				}
+				catch(InvalidCVEntry e){
+					curriculumVitae.writeBytes("InvalidCVEntry:Kein erster oder zweiter eintrag.");
+				}
+				catch(InvalidPicture e){
+					curriculumVitae.writeBytes("InvalidPicture:Kein Bild gefunden.");
+				}
+				catch(InvalidName e){
+					curriculumVitae.writeBytes("InvalidName:Kein Vor oder Nachnahme eingegeben.");
+				}
+				catch (IOException e){
+					System.out.println("IOException:Datei nicht gefunden.");
+				}
+				curriculumVitae.close();
+				
+		}	
 		catch (IOException e){
 			System.out.println("Fehler Datei kann nicht erstellt werde.");
 		}
