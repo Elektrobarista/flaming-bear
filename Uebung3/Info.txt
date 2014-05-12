@@ -1,2 +1,6 @@
 Macht ja Sinn alles in einer AUfgabe zu machen habe das jetzt mal AUfgabe 1 genannt.
 In den Ordner Aufgabe 2 packe ich dann später was man als Konzept für .cv schreiben soll.
+
+Mein alter Übungsleiter meinte wir sollen die Programme von 1 und 2 trotzdem in zwei Ordnern
+abgeben, auch wenns zweimal die gleichen Programme sind.
+Aber ich weiss natürlich nicht wie der werte Herr Lehramtsstudent das gerne hätte...
