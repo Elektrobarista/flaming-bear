@@ -1,16 +1,176 @@
 import	java.io.File;
+import 	java.util.Scanner;
 import	java.io.IOException;	
 import	java.io.RandomAccessFile;	
+import	java.io.FileReader;	
+import	java.io.FileWriter;	
+import	java.io.BufferedReader;	
+import	java.io.BufferedWriter;	
+
+
 
 public class CurriculumVitae {
 	// KLassenvariablen
+	String lineSeparator = System.getProperty("line.separator");
 	String phoneNumber = new String();
 	String email = new String();
 	String[] personalData = new String [3];
 	String[] [] education = new String [2] [6];
 	String[] adress = new String [2];
 	String[] [] language = new String [2] [6];
-	RandomAccessFile curriculumVitae;
+	BufferedWriter curriculumVitae;
+	
+	// Methode zum laden der Daten aus einer .cv Datei
+	public void loadCV(){
+		
+		Scanner scanner = new Scanner(System.in);
+		// Pfad der zu ladenden Datei wird durch Benutzer Eingabe eingelesen.
+ 		System.out.println("In welcher Datei befinden sich ihre CV-Daten?(c:\\User\\ich.cv)");
+		String path = scanner.nextLine();
+		scanner.close();
+		try{
+			// Ein BufferdReader zum lesen der Datei wird angelegt.
+			BufferedReader readCv = new BufferedReader(new FileReader(new File(path)));
+			boolean moreDataExsists = true;
+			String readLine;
+			//Solange witere Lines in der Datei sind werden diese ausgelesen.
+			while(moreDataExsists = true){
+				readLine = readCv.readLine();
+				if(readLine != null){
+					switch (readLine){
+						// Es wird je nachdem welches Schlüsselwort eingelesen wurde eine ander Klassenvariable gesetzt.
+						case "#PersonalData" :
+								this.personalData[0]=readCv.readLine().toString().replaceAll("Vorname: ", "");
+								this.personalData[1]=readCv.readLine().toString().replaceAll("Nachname: ", "");
+								this.personalData[2]=readCv.readLine().toString().replaceAll("Bild: ", "");
+							break;
+						case "#Kontaktdaten" :
+								this.email=readCv.readLine().toString().replaceAll("Email: ", "");
+								this.phoneNumber=readCv.readLine().toString().replaceAll("Telefonnummer: ", "");
+								this.adress[0]=readCv.readLine().toString().replaceAll("Straße: ", "");
+								this.adress[1]=readCv.readLine().toString().replaceAll("Wohnort: ", "");
+							break;
+						case "#Ausbildung" :
+								this.education[0][0]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[0][1]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[0][2]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[0][3]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[0][4]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[0][5]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[1][0]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[1][1]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[1][2]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[1][3]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[1][4]=readCv.readLine().toString().replaceAll("--", "");
+								this.education[1][5]=readCv.readLine().toString().replaceAll("--", "");
+							break;
+						case "#Sprache" :
+								this.language[0][0]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[0][1]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[0][2]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[0][3]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[0][4]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[0][5]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[1][0]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[1][1]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[1][2]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[1][3]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[1][4]=readCv.readLine().toString().replaceAll("--", "");
+								this.language[1][5]=readCv.readLine().toString().replaceAll("--", "");	
+							break;
+						case "$":
+							readCv.close();
+							moreDataExsists = false;
+							
+						break;	
+					}
+				System.out.println(readLine);	
+				}
+				else{
+					moreDataExsists = false;
+				}
+				
+			}
+
+			readCv.close();
+		}
+		catch(IOException	e){
+			
+		}
+	}
+	public void SaveCV(String path){
+		Scanner scanner = new Scanner(System.in);
+		// Pfad der zu ladenden Datei wird durch Benutzer Eingabe eingelesen.
+ 		/*System.out.println("In welche Datei sollen die CV-Daten gespeichert werden?(c:\\User\\ich.cv)");
+		String path = scanner.nextLine();
+		scanner.close();*/
+		File datei = new File (path); 
+		if (path.endsWith(".cv") == false)try{
+			throw new InvalidFile();
+		}
+		catch (InvalidFile ex){
+			System.out.println("InvalidFile:Datei existtiert nicht oder kann nicht geschrieben werden.");
+		}
+		// Öffnet und beschreibt die Datei.
+		else try{
+			File dateiPfad = new File(path.replaceAll(datei.getName(),""));
+			dateiPfad.mkdirs();
+			datei.createNewFile();
+			if (datei.exists() == false || datei.canWrite() == false)try{
+				throw new InvalidFile();
+			}
+			catch (InvalidFile ex){
+				System.out.println("InvalidFile:Datei existtiert nicht oder kann nicht geschrieben werden.");
+			}
+			else try{
+				// Erzeugt einen BufferedWriter zum schreiben der Datei.
+				BufferedWriter writeCv = new BufferedWriter(new FileWriter(datei));
+				writeCv.write("#PersonalData"+this.lineSeparator);
+				writeCv.write("Vorname: "+this.personalData[0]);
+				writeCv.write("Nachname: "+this.personalData[1]+this.lineSeparator);
+				writeCv.write("Bild: "+this.personalData[2]+this.lineSeparator);
+				writeCv.write("#Kontaktdaten"+this.lineSeparator);
+				writeCv.write("Email: "+this.email+this.lineSeparator);
+				writeCv.write("Telefonnummer: "+this.phoneNumber+this.lineSeparator);
+				writeCv.write("Straße: "+this.adress[0]+this.lineSeparator);
+				writeCv.write("Wohnort: "+this.adress[1]+this.lineSeparator);
+				writeCv.write("#Ausbildung"+this.lineSeparator);
+				writeCv.write(this.education[0][0]+this.lineSeparator);
+				writeCv.write(this.education[0][1]+this.lineSeparator);
+				writeCv.write(this.education[0][2]+this.lineSeparator);
+				writeCv.write(this.education[0][3]+this.lineSeparator);
+				writeCv.write(this.education[0][4]+this.lineSeparator);
+				writeCv.write(this.education[0][5]+this.lineSeparator);
+				writeCv.write(this.education[1][0]+this.lineSeparator);
+				writeCv.write(this.education[1][1]+this.lineSeparator);
+				writeCv.write(this.education[1][2]+this.lineSeparator);
+				writeCv.write(this.education[1][3]+this.lineSeparator);
+				writeCv.write(this.education[1][4]+this.lineSeparator);
+				writeCv.write(this.education[1][5]+this.lineSeparator);
+				writeCv.write("#Sprachen"+this.lineSeparator);
+				writeCv.write(this.language[0][0]+this.lineSeparator);
+				writeCv.write(this.language[0][1]+this.lineSeparator);
+				writeCv.write(this.language[0][2]+this.lineSeparator);
+				writeCv.write(this.language[0][3]+this.lineSeparator);
+				writeCv.write(this.language[0][4]+this.lineSeparator);
+				writeCv.write(this.language[0][5]+this.lineSeparator);
+				writeCv.write(this.language[1][0]+this.lineSeparator);
+				writeCv.write(this.language[1][1]+this.lineSeparator);
+				writeCv.write(this.language[1][2]+this.lineSeparator);
+				writeCv.write(this.language[1][3]+this.lineSeparator);
+				writeCv.write(this.language[1][4]+this.lineSeparator);
+				writeCv.write(this.language[1][5]+this.lineSeparator);
+				writeCv.write("$");
+				writeCv.close();
+			}
+			catch(IOException eq){
+			/////////////////	
+			}
+		}	
+		catch(IOException e){
+		/////////////////////		
+		}
+	}
 	
 	// Tauscht alle Umlaute gegen Latexkonforme Codierung um
 	String convertUmlaut(String convert){
@@ -27,7 +187,7 @@ public class CurriculumVitae {
 	// Erzeugt einen String in dem Latex-Code für persönliche Daten steht. ( Name, Vorname, Bild)
 	String createPersonalData() throws InvalidName ,InvalidPicture{
 			// Liest Lineseperator aus.
-			String lineSeparator = System.getProperty("line.separator");
+			
 			// Wurde ein Vorname eingegeben?
 			if (personalData[0].equals("") == true){
 				throw new InvalidName();
@@ -37,7 +197,7 @@ public class CurriculumVitae {
 				throw new InvalidName();
 			}
 			if (personalData[2].equals("") == true){
-				return "\\firstname{"+personalData[0]+"}"+lineSeparator+"\\familyname{"+personalData[1]+"}";
+				return "\\firstname{"+personalData[0]+"}"+this.lineSeparator+"\\familyname{"+personalData[1]+"}";
 			}
 			String latexPath = "";
 			for (int i = 0; i < personalData[2].length(); i++){
@@ -153,44 +313,44 @@ public class CurriculumVitae {
 			
 				// Liest den Betriebssystemt line Seperator aus.
 				String lineSeparator = System.getProperty("line.separator");
-				this.curriculumVitae = new RandomAccessFile(datei,"rw");
+				this.curriculumVitae = new BufferedWriter(new FileWriter(datei));
 				//Schreibt Anfang des Latex DOKUMENTS
-				curriculumVitae.writeBytes("%use class moderncv"+lineSeparator +"\\documentclass[11pt,a4paper]{moderncv}"+lineSeparator+lineSeparator+"%language package"+lineSeparator
+				curriculumVitae.write("%use class moderncv"+lineSeparator +"\\documentclass[11pt,a4paper]{moderncv}"+lineSeparator+lineSeparator+"%language package"+lineSeparator
 											+ "\\usepackage[german]{babel}"+lineSeparator+lineSeparator+"%choosen theme"+lineSeparator+"\\moderncvtheme[blue]{classic}"+lineSeparator);
 				// Schreiben der Datei.	
-				curriculumVitae.writeBytes(this.convertUmlaut(this.createPersonalData())+lineSeparator);
-				curriculumVitae.writeBytes("\\begin{document}"+lineSeparator+"\\maketitle"+lineSeparator+"\\section{Komtaktdaten}"+lineSeparator);
-				curriculumVitae.writeBytes(this.convertUmlaut(this.writeCVLine("",adress[0]))+lineSeparator);
-				curriculumVitae.writeBytes(this.convertUmlaut(this.writeCVLine("",adress[1]))+lineSeparator);
-				curriculumVitae.writeBytes(this.convertUmlaut(this.writeEmailLine())+lineSeparator);
-				curriculumVitae.writeBytes(this.writeMobileLine()+lineSeparator);
-				curriculumVitae.writeBytes("\\section{Ausbildung}"+lineSeparator);
-				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(education[0]))+lineSeparator);
-				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(education[1]))+lineSeparator);
-				curriculumVitae.writeBytes("\\section{Sprachen}"+lineSeparator);
-				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(language[0]))+lineSeparator);
-				curriculumVitae.writeBytes(this.convertUmlaut(this.createCVEntry(language[1]))+lineSeparator);
-				curriculumVitae.writeBytes("\\end{document}");
+				curriculumVitae.write(this.convertUmlaut(this.createPersonalData())+lineSeparator);
+				curriculumVitae.write("\\begin{document}"+lineSeparator+"\\maketitle"+lineSeparator+"\\section{Komtaktdaten}"+lineSeparator);
+				curriculumVitae.write(this.convertUmlaut(this.writeCVLine("",adress[0]))+lineSeparator);
+				curriculumVitae.write(this.convertUmlaut(this.writeCVLine("",adress[1]))+lineSeparator);
+				curriculumVitae.write(this.convertUmlaut(this.writeEmailLine())+lineSeparator);
+				curriculumVitae.write(this.writeMobileLine()+lineSeparator);
+				curriculumVitae.write("\\section{Ausbildung}"+lineSeparator);
+				curriculumVitae.write(this.convertUmlaut(this.createCVEntry(education[0]))+lineSeparator);
+				curriculumVitae.write(this.convertUmlaut(this.createCVEntry(education[1]))+lineSeparator);
+				curriculumVitae.write("\\section{Sprachen}"+lineSeparator);
+				curriculumVitae.write(this.convertUmlaut(this.createCVEntry(language[0]))+lineSeparator);
+				curriculumVitae.write(this.convertUmlaut(this.createCVEntry(language[1]))+lineSeparator);
+				curriculumVitae.write("\\end{document}");
 				curriculumVitae.close();
 			}
 				//Exceptons werden abgefangen
 				catch(InvalidMobileNumber e){
-					curriculumVitae.writeBytes("InvalidMobileNumber:Keine g\"ultige Telefonnummer.");
+					curriculumVitae.write("InvalidMobileNumber:Keine g\"ultige Telefonnummer.");
 				}
 				catch(InvalidEmail e){
-					curriculumVitae.writeBytes("InvalidEmail:Keine g\"ultige Email-Adresse");
+					curriculumVitae.write("InvalidEmail:Keine g\"ultige Email-Adresse");
 				}
 				catch(InvalidCVLine e){
-					curriculumVitae.writeBytes("InvalidCVLine:Kein zweiter eintrag.");
+					curriculumVitae.write("InvalidCVLine:Kein zweiter eintrag.");
 				}
 				catch(InvalidCVEntry e){
-					curriculumVitae.writeBytes("InvalidCVEntry:Kein erster oder zweiter eintrag.");
+					curriculumVitae.write("InvalidCVEntry:Kein erster oder zweiter eintrag.");
 				}
 				catch(InvalidPicture e){
-					curriculumVitae.writeBytes("InvalidPicture:Kein Bild gefunden.");
+					curriculumVitae.write("InvalidPicture:Kein Bild gefunden.");
 				}
 				catch(InvalidName e){
-					curriculumVitae.writeBytes("InvalidName:Kein Vor oder Nachnahme eingegeben.");
+					curriculumVitae.write("InvalidName:Kein Vor oder Nachnahme eingegeben.");
 				}
 				catch (IOException e){
 					System.out.println("IOException:Datei nicht gefunden.");

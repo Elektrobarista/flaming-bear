@@ -2,8 +2,11 @@ import 	java.util.Scanner;
 public class main {
 
 	public static void main(String[] args) {
+		
 		Scanner scanner = new Scanner(System.in);
 		CurriculumVitae kermit = new CurriculumVitae();
+		kermit.loadCV();
+		/*
 		kermit.personalData[0] = "Kermit der";
 		kermit.personalData[1] = "Frosch";
 		System.out.println("Bilddateipfad eingeben(.jpg):");
@@ -36,9 +39,11 @@ public class main {
 		kermit.language[1][3] = "";
 		kermit.language[1][4] = "";
 		kermit.language[1][5] = "";
+		*/
 		System.out.println("Dateipfad für .tex Datei angeben:");
-		kermit.writeCV(scanner.nextLine());
-		scanner.close();
+		kermit.writeCV("c:\\users\\lars\\current.tex");
+		scanner.close();	
+		kermit.SaveCV("c:\\users\\lars\\test2.cv");
 	}
 
 }
