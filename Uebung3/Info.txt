@@ -4,3 +4,9 @@ In den Ordner Aufgabe 2 packe ich dann später was man als Konzept für .cv schrei
 Mein alter Übungsleiter meinte wir sollen die Programme von 1 und 2 trotzdem in zwei Ordnern
 abgeben, auch wenns zweimal die gleichen Programme sind.
 Aber ich weiss natürlich nicht wie der werte Herr Lehramtsstudent das gerne hätte...
+
+Bei der load-Methode müssen eventuell noch die Werte für CV-Theme rein, weil wir die ja bei der
+1 extra als Variablen anlegen sollen ;)
+Hab das jetzt einfach mal ganz oben in der load-Methode definiert.
+
+Außerdem hab ich der Ausgabe der Section Sprache cvEntry zu cvLine abgeändert.
