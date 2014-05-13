@@ -137,7 +137,7 @@ public class CurriculumVitae {
       throw new InvalidFile();
     }
     catch (InvalidFile ex){
-      System.out.println("InvalidFile:Datei existtiert nicht oder kann nicht geschrieben werden.");
+      System.out.println("InvalidFile:Datei existiert nicht oder kann nicht geschrieben werden.");
     }
     // Öffnet und beschreibt die Datei.
     else try{
@@ -148,7 +148,7 @@ public class CurriculumVitae {
         throw new InvalidFile();
       }
       catch (InvalidFile ex){
-        System.out.println("InvalidFile:Datei existtiert nicht oder kann nicht geschrieben werden.");
+        System.out.println("InvalidFile:Datei existiert nicht oder kann nicht geschrieben werden.");
       }
       else try{
         // Erzeugt einen BufferedWriter zum schreiben der Datei.
