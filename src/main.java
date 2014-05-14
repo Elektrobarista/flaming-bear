@@ -1,7 +1,7 @@
 import java.io.IOException;
 import 	java.util.Scanner;
 
-import CurriculumVitae.LanguageKnowledge;
+
 public class main {
 
 	public static void main(String[] args) {
@@ -30,28 +30,28 @@ public class main {
 		kermit.education[1][4] = "";
 		kermit.education[1][5] = "";
 		kermit.language[0][0] = "Deutsch";
-		kermit.langknow[0] = kermit.LanguageKnowledge.MUTTERSPRACHE;
-		kermit.language[0][2] = "";
-		kermit.language[0][3] = "";
-		kermit.language[0][4] = "";
-		kermit.language[0][5] = "";
-		kermit.language[1][0] = "Sprachen";
+		kermit.language[0][1] = kermit.mu.getKnowledge();
+		kermit.language[1][0] = "Englisch";
+		kermit.language[1][1] = kermit.fl.getKnowledge();
+		kermit.language[2][0] = "Spanisch";
+		kermit.language[2][1] = kermit.gr.getKnowledge();
+		/*kermit.language[1][0] = "Sprachen";
 		kermit.language[1][1] = "Englisch";
 		kermit.language[1][2] = "Spanisch";
 		kermit.language[1][3] = "";
 		kermit.language[1][4] = "";
-		kermit.language[1][5] = "";
+		kermit.language[1][5] = "";*/
 		
-		System.out.println("Dateipfad für .tex Datei angeben:");
-		//kermit.writeCV("c:\\users\\alex\\current.tex");
+		//System.out.println("Dateipfad für .tex Datei angeben:");
+		kermit.writeCV("c:\\users\\alex\\current.tex");
 		scanner.close();	
 		//kermit.saveCV("c:\\users\\alex\\test2.cv");
-		try {
+		/*try {
 			kermit.compressCV("c:\\users\\alex\\test.zip");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 }
