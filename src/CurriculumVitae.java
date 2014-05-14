@@ -8,6 +8,11 @@
 
 import  java.io.File;
 import  java.util.Scanner;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import  java.io.IOException;  
 import  java.io.RandomAccessFile; 
 import  java.io.FileReader; 
@@ -19,16 +24,16 @@ import  java.io.BufferedWriter;
 
 public class CurriculumVitae {
   // Klassenvariablen
-  private String lineSeparator = System.getProperty("line.separator");
-  private String phoneNumber = new String();
-  private String email = new String();
-  private String[] personalData = new String [3];
-  private String[] [] education = new String [2] [6];
-  private String[] adress = new String [2];
-  private String[] language = new String [6];
-  private BufferedWriter curriculumVitae;
-  private CVTheme theme=new CVTheme();
-  private enum LanguageKnowledge {
+   String lineSeparator = System.getProperty("line.separator");
+   String phoneNumber = new String();
+   String email = new String();
+   String[] personalData = new String [3];
+   String[] [] education = new String [2] [6];
+   String[] adress = new String [2];
+   String[] language = new String [6];
+   BufferedWriter curriculumVitae;
+   CVTheme theme=new CVTheme();
+   enum LanguageKnowledge {
     MUTTERSPRACHE("Muttersprache"), FLIESSEND("fließend in Wort und Schrift"), GRUNDKENNTNISSE("Grundkenntnisse");
     String knowledge;
     LanguageKnowledge(String lk){
@@ -38,8 +43,8 @@ public class CurriculumVitae {
       return this.knowledge;
     }  
   }
-  private String[] langknowString=new String[6];
-  private LanguageKnowledge [] langknow=new LanguageKnowledge[6];
+  public String[] langknowString=new String[6];
+  public LanguageKnowledge [] langknow = new LanguageKnowledge[6];
   
   // Methode zum laden der Daten aus einer .cv Datei
   public void loadCV(){
@@ -58,11 +63,11 @@ public class CurriculumVitae {
       boolean moreDataExsists = true;
       String readLine;
       //Solange witere Lines in der Datei sind werden diese ausgelesen.
-      while(moreDataExsists = true){
+      while(moreDataExsists == true){
         readLine = readCv.readLine();
         if(readLine != null){
           switch (readLine){
-            // Es wird je nachdem welches Schlüsselwort eingelesen wurde eine ander Klassenvariable gesetzt.
+            // Es wird je nachdem welches Schlüsselwort eingelesen wurde eine andere Klassenvariable gesetzt.
             case "#PersonalData" :
             this.personalData[0]=readCv.readLine().toString().replaceAll("Vorname: ", "");
             this.personalData[1]=readCv.readLine().toString().replaceAll("Nachname: ", "");
@@ -80,18 +85,6 @@ public class CurriculumVitae {
                 this.education[i][j]=readCv.readLine().toString().replaceAll("--", "");
               }
             } 
-            this.education[0][0]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[0][1]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[0][2]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[0][3]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[0][4]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[0][5]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[1][0]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[1][1]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[1][2]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[1][3]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[1][4]=readCv.readLine().toString().replaceAll("--", "");
-            this.education[1][5]=readCv.readLine().toString().replaceAll("--", "");
             break;
             case "#Sprache" :
             for (int i=0;i<6 ;i++ ) {
@@ -126,7 +119,7 @@ public class CurriculumVitae {
       
     }
   }
-  public void SaveCV(String path){
+  public void saveCV(String path){
     Scanner scanner = new Scanner(System.in);
     // Pfad der zu ladenden Datei wird durch Benutzer Eingabe eingelesen.
     /*System.out.println("In welche Datei sollen die CV-Daten gespeichert werden?(c:\\User\\ich.cv)");
@@ -154,7 +147,7 @@ public class CurriculumVitae {
         // Erzeugt einen BufferedWriter zum schreiben der Datei.
         BufferedWriter writeCv = new BufferedWriter(new FileWriter(datei));
         writeCv.write("#PersonalData"+this.lineSeparator);
-        writeCv.write("Vorname: "+this.personalData[0]);
+        writeCv.write("Vorname: "+this.personalData[0]+this.lineSeparator);
         writeCv.write("Nachname: "+this.personalData[1]+this.lineSeparator);
         writeCv.write("Bild: "+this.personalData[2]+this.lineSeparator);
         writeCv.write("#Kontaktdaten"+this.lineSeparator);
@@ -163,18 +156,12 @@ public class CurriculumVitae {
         writeCv.write("Straße: "+this.adress[0]+this.lineSeparator);
         writeCv.write("Wohnort: "+this.adress[1]+this.lineSeparator);
         writeCv.write("#Ausbildung"+this.lineSeparator);
-        writeCv.write(this.education[0][0]+this.lineSeparator);
-        writeCv.write(this.education[0][1]+this.lineSeparator);
-        writeCv.write(this.education[0][2]+this.lineSeparator);
-        writeCv.write(this.education[0][3]+this.lineSeparator);
-        writeCv.write(this.education[0][4]+this.lineSeparator);
-        writeCv.write(this.education[0][5]+this.lineSeparator);
-        writeCv.write(this.education[1][0]+this.lineSeparator);
-        writeCv.write(this.education[1][1]+this.lineSeparator);
-        writeCv.write(this.education[1][2]+this.lineSeparator);
-        writeCv.write(this.education[1][3]+this.lineSeparator);
-        writeCv.write(this.education[1][4]+this.lineSeparator);
-        writeCv.write(this.education[1][5]+this.lineSeparator);
+        for (int i=0;i<(this.education.length) ;i++ ) {
+            for (int j=0;j<(this.education[0].length);j++ ) {
+            	writeCv.write(this.education[i][j]+this.lineSeparator); 
+            }
+          } 
+       
         writeCv.write("#Sprachen"+this.lineSeparator);
         for (int i=0;i<6;i++ ) {
           writeCv.write(this.language[i]+this.lineSeparator);
@@ -340,7 +327,7 @@ public class CurriculumVitae {
         curriculumVitae.write(lineSeparator+"%language package"+lineSeparator);
         curriculumVitae.write("\\usepackage[german]{babel}"+lineSeparator);
         curriculumVitae.write(lineSeparator+"%choosen theme"+lineSeparator);
-        curriculumVitae.write("\\moderncvtheme["+theme.getColor()+"]{"+theme.getStyle()+"}"+lineSeparator);
+       // curriculumVitae.write("\\moderncvtheme["+theme.getColor()+"]{"+theme.getStyle()+"}"+lineSeparator);
         // Schreiben der Datei. 
         curriculumVitae.write(this.convertUmlaut(this.createPersonalData())+lineSeparator);
         curriculumVitae.write("\\begin{document}"+lineSeparator+"\\maketitle"+lineSeparator+"\\section{Komtaktdaten}"+lineSeparator);
@@ -352,11 +339,11 @@ public class CurriculumVitae {
         curriculumVitae.write(this.convertUmlaut(this.createCVEntry(education[0]))+lineSeparator);
         curriculumVitae.write(this.convertUmlaut(this.createCVEntry(education[1]))+lineSeparator);
         curriculumVitae.write("\\section{Sprachen}"+lineSeparator);
-        for (int i=0;i<language.length ;i++ ) {
+        /*for (int i=0;i<language.length ;i++ ) {
           if (language[i]!="") {
             curriculumVitae.write(this.convertUmlaut(this.writeCVLine(language[i],langknow[i].getKnowledge()))+lineSeparator);
           }
-        } 
+        } */
         curriculumVitae.write("\\end{document}");
         curriculumVitae.close();
       }
@@ -389,4 +376,58 @@ public class CurriculumVitae {
       System.out.println("Fehler Datei kann nicht erstellt werde.");
     }
   }
+  
+  public void compressCV(String path) throws IOException{
+	  File zipFile = new File(path);
+	  File cvTex = new File (path.replaceAll(zipFile.getName(), "")+"\\"+this.personalData[0] +"_" + this.personalData[1] + ".tex");
+	  File pfad = new File(cvTex.getPath().replaceAll(cvTex.getName(), ""));
+	  cvTex.createNewFile();
+	  this.writeCV(cvTex.getPath());
+	  FileInputStream	fis	=	new	FileInputStream(cvTex);	
+		ZipOutputStream	zos	=	new	ZipOutputStream(new FileOutputStream(zipFile));	
+			
+		int	read	=	fis.read();	
+		ZipEntry zipEntry = new ZipEntry(cvTex.getName());
+		zos.putNextEntry(zipEntry);
+		while	(read	!=	-1)	{	
+				zos.write(read);	
+				read	=	fis.read();	
+		}
+		cvTex.deleteOnExit();
+		zos.closeEntry();
+		fis.close();
+		
+		 File cvCv = new File (path.replaceAll(zipFile.getName(), "")+"\\"+this.personalData[0] +"_" + this.personalData[1] + ".cv");	
+		
+		  cvCv.createNewFile();
+		  
+		  this.saveCV(cvCv.getPath());
+		  fis	=	new	FileInputStream(cvCv);	
+		  read	=	fis.read();	
+		  zipEntry = new ZipEntry(cvCv.getName());
+			zos.putNextEntry(zipEntry);
+			while	(read	!=	-1)	{	
+					zos.write(read);	
+					read	=	fis.read();	
+			}
+			cvCv.deleteOnExit();
+			zos.closeEntry();
+		
+		fis.close();
+		//Sas ist schön und üüüüüüüüüüüüüüü
+		File picture = new File (this.personalData[2]);	
+		
+		  fis	=	new	FileInputStream(cvCv);	
+		  read	=	fis.read();	
+		  zipEntry = new ZipEntry(picture.getName());
+			zos.putNextEntry(zipEntry);
+			while	(read	!=	-1)	{	
+					zos.write(read);	
+					read	=	fis.read();	
+			}
+			zos.closeEntry();
+		
+		fis.close();
+		zos.close();
+  }	
 }
