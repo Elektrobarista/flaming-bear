@@ -43,15 +43,16 @@ public class main {
 		kermit.language[1][5] = "";*/
 		
 		//System.out.println("Dateipfad für .tex Datei angeben:");
-		kermit.writeCV("c:\\users\\alex\\current.tex");
+		//kermit.writeCV("c:\\users\\Lars\\current.tex");
 		scanner.close();	
-		//kermit.saveCV("c:\\users\\alex\\test2.cv");
-		/*try {
-			kermit.compressCV("c:\\users\\alex\\test.zip");
+		//kermit.saveCV("c:\\users\\lars\\test2.cv");
+		try {
+			kermit.compressCV("c:\\users\\lars\\test.zip");
+			kermit.compressCV("c:\\users\\lars\\test.gzip");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 	}
 
 }

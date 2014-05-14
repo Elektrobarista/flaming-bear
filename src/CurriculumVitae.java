@@ -50,6 +50,7 @@ public class CurriculumVitae {
 			return this.knowledge;
 		}
 	}
+	
 
 	public String[] langknowString = new String[6];
 	public LanguageKnowledge[] langknow = new LanguageKnowledge[6];
@@ -162,10 +163,10 @@ public class CurriculumVitae {
 						}
 
 						writeCv.write("#Sprachen" + this.lineSeparator);
-						for (int i = 0; i < 6; i++) {
+						/*for (int i = 0; i < 6; i++) {
 							writeCv.write(this.language[i] + this.lineSeparator);
 							writeCv.write(this.langknow[i] + this.lineSeparator);
-						}
+						}*/
 						writeCv.write("$");
 						writeCv.close();
 					} catch (IOException eq) {
@@ -479,7 +480,32 @@ public class CurriculumVitae {
 			zos.close();
 		}
 		else if (path.endsWith(".gzip")){
-			//Hier muss noch GZIP rein
+			
+			File gzipFile = new File(path);
+			
+			File cvTex = new File(path.replaceAll(gzipFile.getName(), "") + "\\"
+					+ this.personalData[0] + "_" + this.personalData[1]
+					+ ".tex");
+			File pfad = new File(cvTex.getPath()
+					.replaceAll(cvTex.getName(), ""));
+			pfad.mkdirs();
+			cvTex.createNewFile();
+			//this.writeCV(cvTex.getPath());
+			FileInputStream	fis	=	new	FileInputStream(cvTex);	
+			GZIPOutputStream zos	=	new	GZIPOutputStream(new FileOutputStream(gzipFile),2097152);	
+				
+			int	read	=	fis.read();	
+			while	(read	!=	-1)	{	
+					zos.write(read);	
+					read	=	fis.read();	
+			}	
+			cvTex.deleteOnExit();	
+			fis.close();	
+			zos.close();	
+			
+
+			
+			
 		}
 	}
 }
