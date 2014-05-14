@@ -56,54 +56,77 @@ public class CurriculumVitae {
 	public LanguageKnowledge[] langknow = new LanguageKnowledge[6];
 
 	// Methode zum laden der Daten aus einer .cv Datei
-	/*
-	 * public void loadCV(){ //Festlegen des moderncvthemes
-	 * theme.setColor("blue"); theme.setStyle("classic");
-	 * 
-	 * Scanner scanner = new Scanner(System.in); // Pfad der zu ladenden Datei
-	 * wird durch Benutzer Eingabe eingelesen. System.out.println(
-	 * "In welcher Datei befinden sich ihre CV-Daten?(c:\\User\\ich.cv)");
-	 * String path = scanner.nextLine(); scanner.close(); try{ // Ein
-	 * BufferdReader zum lesen der Datei wird angelegt. BufferedReader readCv =
-	 * new BufferedReader(new FileReader(new File(path))); boolean
-	 * moreDataExsists = true; String readLine; //Solange witere Lines in der
-	 * Datei sind werden diese ausgelesen. while(moreDataExsists == true){
-	 * readLine = readCv.readLine(); if(readLine != null){ switch (readLine){ //
-	 * Es wird je nachdem welches Schlüsselwort eingelesen wurde eine andere
-	 * Klassenvariable gesetzt. case "#PersonalData" :
-	 * this.personalData[0]=readCv.readLine().toString().replaceAll("Vorname: ",
-	 * "");
-	 * this.personalData[1]=readCv.readLine().toString().replaceAll("Nachname: "
-	 * , "");
-	 * this.personalData[2]=readCv.readLine().toString().replaceAll("Bild: ",
-	 * ""); break; case "#Kontaktdaten" :
-	 * this.email=readCv.readLine().toString().replaceAll("Email: ", "");
-	 * this.phoneNumber
-	 * =readCv.readLine().toString().replaceAll("Telefonnummer: ", "");
-	 * this.adress[0]=readCv.readLine().toString().replaceAll("Straße: ", "");
-	 * this.adress[1]=readCv.readLine().toString().replaceAll("Wohnort: ", "");
-	 * break; case "#Ausbildung" : for (int i=0;i<(this.education.length) ;i++ )
-	 * { for (int j=0;j<(this.education[0].length);j++ ) {
-	 * this.education[i][j]=readCv.readLine().toString().replaceAll("--", ""); }
-	 * } break; case "#Sprache" : for (int i=0;i<6 ;i++ ) {
-	 * this.language[i]=readCv.readLine().toString().replaceAll("--", "");
-	 * this.langknowString[i]=readCv.readLine().toString().replaceAll("--", "");
-	 * if (this.langknowString[i].equals("Muttersprache")) {
-	 * this.langknow[i]=LanguageKnowledge.MUTTERSPRACHE; }else if
-	 * (this.langknowString[i].equals("fließend in Wort und Schrift")){
-	 * this.langknow[i]=LanguageKnowledge.FLIESSEND; }else
-	 * if(this.langknowString[i].equals("Grundkenntnisse")){
-	 * this.langknow[i]=LanguageKnowledge.GRUNDKENNTNISSE; } } break; case "$":
-	 * readCv.close(); moreDataExsists = false;
-	 * 
-	 * break; } System.out.println(readLine); } else{ moreDataExsists = false; }
-	 * 
-	 * }
-	 * 
-	 * readCv.close(); } catch(IOException e){
-	 * 
-	 * } }
-	 */
+	
+	 public void loadCV(){ 
+	//Festlegen des moderncvthemes
+		 theme.setColor("blue");
+		 theme.setStyle("classic");
+	  
+		 Scanner scanner = new Scanner(System.in); 
+	  // Pfad der zu ladenden Datei wird durch Benutzer Eingabe eingelesen.
+		 System.out.println("In welcher Datei befinden sich ihre CV-Daten?(c:\\User\\ich.cv)");
+		 String path = scanner.nextLine(); scanner.close(); try{
+	// EinBufferdReader zum lesen der Datei wird angelegt.
+		  BufferedReader readCv = new BufferedReader(new FileReader(new File(path))); 
+		  boolean moreDataExsists = true;
+		  String readLine; 
+		  //Solange witere Lines in der Datei sind werden diese ausgelesen. 
+		  while(moreDataExsists == true){
+			  readLine = readCv.readLine();
+			  if(readLine != null){ 
+				  switch (readLine){
+		//Es wird je nachdem welches Schlüsselwort eingelesen wurde eine ander Klassenvariable gesetzt. 
+				  	case "#PersonalData" :
+		  
+				  		this.personalData[0]=readCv.readLine().toString().replaceAll("Vorname: ","");
+				  		this.personalData[1]=readCv.readLine().toString().replaceAll("Nachname: ", "");
+				  		this.personalData[2]=readCv.readLine().toString().replaceAll("Bild: ", "");
+				  		break;
+				  
+				  	case "#Kontaktdaten" :
+				  		this.email=readCv.readLine().toString().replaceAll("Email: ", "");
+				  		this.phoneNumber =readCv.readLine().toString().replaceAll("Telefonnummer: ", "");
+				  		this.adress[0]=readCv.readLine().toString().replaceAll("Straße: ", "");
+				  		this.adress[1]=readCv.readLine().toString().replaceAll("Wohnort: ", "");
+				  		break;
+				  
+				  	case "#Ausbildung" : 
+				  		for (int i=0;i<(this.education.length) ;i++ ){ 
+				  			for (int j=0;j<(this.education[0].length);j++ ) {
+				  				this.education[i][j]=readCv.readLine().toString().replaceAll("--", ""); }
+				  		} 
+				  		break;
+				  
+				  	case "#Sprache" : 
+				  		for (int i=0;i<6 ;i++ ) {
+				  			this.language[i]=readCv.readLine().toString().replaceAll("--", "");
+				  			this.langknowString[i]=readCv.readLine().toString().replaceAll("--", "");
+				  			if (this.langknowString[i].equals("Muttersprache")) {
+				  				this.langknow[i]=LanguageKnowledge.MUTTERSPRACHE; }
+				  			else if(this.langknowString[i].equals("fließend in Wort und Schrift")){
+				  					this.langknow[i]=LanguageKnowledge.FLIESSEND; }
+				  			else
+				  				if(this.langknowString[i].equals("Grundkenntnisse")){
+				  					this.langknow[i]=LanguageKnowledge.GRUNDKENNTNISSE; } }
+				  		break;
+				  
+				  	case "$":  
+				  		readCv.close(); 
+				  		moreDataExsists = false;
+				  		break; 
+				  }
+			  System.out.println(readLine); } 
+			  else{ 
+				  moreDataExsists = false;
+			  }
+	  
+		  }
+	  
+		  readCv.close(); } catch(IOException e){
+		  
+		  } 
+	  }
+	 
 	public void saveCV(String path) {
 		Scanner scanner = new Scanner(System.in);
 		// Pfad der zu ladenden Datei wird durch Benutzer Eingabe eingelesen.
