@@ -1,0 +1,1 @@
+Nein, die KlasseCurriculumVitae ist nicht serialisierbar, aufgrund ihrer komplexen Struktur.
