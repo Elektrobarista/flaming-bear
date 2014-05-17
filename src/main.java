@@ -5,7 +5,10 @@ import  java.util.Scanner;
 public class main {
   
   public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
+	  
+	  CVGui gui = new CVGui();
+	  gui.setVisible(true);
+    /*Scanner scanner = new Scanner(System.in);
     CurriculumVitae kermit = new CurriculumVitae();
     //kermit.loadCV();
     //Festlegen des moderncvthemes
@@ -49,7 +52,7 @@ public class main {
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
-    }
+    }*/
   }
   
 }
