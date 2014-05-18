@@ -7,7 +7,7 @@
 */
 
 public class CVTheme {
-  enum Color{YELLOW,ORANGE,RED,GREEN,BLUE};
+  enum Color{ORANGE,RED,GREEN,BLUE};
   enum Style{CASUAL,CLASSIC,EMPTY,OLDSTYLE};
   private Color color;
   private Style style;
