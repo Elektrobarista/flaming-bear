@@ -1,5 +1,8 @@
 import java.awt.BorderLayout;
+import java.awt.Image;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,6 +13,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * 
@@ -18,6 +22,30 @@ public class CVGui extends JFrame {
   
   //create new CurriculumVitae object
   CurriculumVitae cv = new CurriculumVitae();
+  ImageIcon addPicture;
+  JButton addPic;
+  JPanel contactdetails;
+  
+  
+  // Setzt das Bild.
+  public void getPicture(){
+	  JFileChooser chooser = new JFileChooser();
+      //only jpg-files selectable
+      FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG Images", "jpg", "JPG");
+      chooser.setFileFilter(filter);
+      
+                      //Soll auf Gui zugreifen v
+      int returnVal = chooser.showOpenDialog(this);
+      if(returnVal == JFileChooser.APPROVE_OPTION) {
+    	  ImageIcon newIcon = new ImageIcon(chooser.getSelectedFile().toString());
+    	  Image img = newIcon.getImage().getScaledInstance(137,177,java.awt.Image.SCALE_SMOOTH);
+    	  this.addPicture=new ImageIcon(img); 
+    	  this.addPic.setText("");
+    	  this.addPic.setIcon(this.addPicture);
+    	  
+      }
+     
+  }
   
   public CVGui(){
     
@@ -46,8 +74,13 @@ public class CVGui extends JFrame {
     mainPanel.add(jtp, BorderLayout.CENTER); //locate "jtp" in center of mainPanel
     
     //new Panel contact details
-    JPanel contactdetails=new JPanel();
+    this.contactdetails=new JPanel();
     jtp.addTab("Contact Details",contactdetails);
+    JPanel cvPreferences=new JPanel();
+    jtp.addTab("Contact Details",cvPreferences);
+    JPanel cvContent=new JPanel();
+    jtp.addTab("Contact Details",cvContent);
+    
     
     
     
@@ -71,24 +104,27 @@ public class CVGui extends JFrame {
     contactdetails.add(email);
     
     // add Button to load picture
-    JButton addPic=new JButton("add Picture");
+    this.addPic=new JButton("Add Picture",this.addPicture);
     //??
-    addPic.setSize(137,177);
-    contactdetails.add(addPic);
+    this.addPic.setSize(137,177);
+    contactdetails.add(this.addPic);
     addPic.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
+    	  /*
         JFileChooser chooser = new JFileChooser();
         //only jpg-files selectable
         FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG Images", "jpg", "JPG");
         chooser.setFileFilter(filter);
-        /*
+        
                         //Soll auf Gui zugreifen v
-        int returnVal = chooser.showOpenDialog(CVGui);
+        int returnVal = chooser.showOpenDialog(this);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
           System.out.println("You chose to open this file: " +
           chooser.getSelectedFile().getName());  
-        }*/
-      }  
+        }
+        */
+    	  getPicture();
+      }
     })  ;
     
     
