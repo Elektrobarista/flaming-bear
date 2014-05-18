@@ -69,7 +69,7 @@ public class CVGui extends JFrame implements ActionListener{
   Boolean cvLineChoosen;
   String picture = "";
   
-  //
+  //Write Cv
   public void writeCV(){
 	  	this.cv.personalData[0] = this.firstname.getText();
 	  	this.cv.personalData[1] = this.lastname.getText();
@@ -84,6 +84,67 @@ public class CVGui extends JFrame implements ActionListener{
 	  	this.cv.writeCV("c:\\users\\lars\\test123.tex");
 	  	
   }
+  public void loadCV(){
+	  JFileChooser chooser = new JFileChooser();
+	//only cv-files selectable
+      FileNameExtensionFilter filter = new FileNameExtensionFilter("CV-Save", "cv");
+      chooser.setFileFilter(filter);
+      int returnVal = chooser.showOpenDialog(this);
+      if(returnVal == JFileChooser.APPROVE_OPTION) {
+    	  this.cv.loadCV(chooser.getSelectedFile().toString());  
+      }
+      this.firstname.setText(this.cv.personalData[0]);
+	  this.lastname.setText(this.cv.personalData[1]);
+	  this.picture=this.cv.personalData[2];
+	  //Muss noch geteilt werden
+	  this.street.setText(this.cv.adress[0]);
+	  this.number.setText(this.cv.adress[0]);
+	  this.postcode.setText(this.cv.adress[1]);
+	  this.city.setText(this.cv.adress[1]);
+	  this.phone.setText(this.cv.phoneNumber);
+	  this.email.setText(this.cv.email);
+	  for(int i = 0; i<this.cv.exsistingSections;i++){
+		  this.sections.addItem(this.cv.sections.get(i).getName());
+	  }
+	  switch(this.cv.theme.getColor()){
+	  	case "orange":
+	  		this.radioButtonOrange.setSelected(true);
+	  		this.cvColor="orange";
+	  		break;
+	  	case "blue":
+	  		this.radioButtonBlue.setSelected(true);
+	  		this.cvColor="blue";
+	  		break;
+	  	case "red":
+	  		this.radioButtonRed.setSelected(true);
+	  		this.cvColor="red";
+	  		break;
+	  	case "green":
+	  		this.radioButtonGreen.setSelected(true);
+	  		this.cvColor="green";
+	  		break;
+	  };
+	  switch(this.cv.theme.getStyle()){
+	  	case "classic":
+	  		this.radioButtonClassic.setSelected(true);
+	  		this.cvColor="classic";
+	  		break;
+	  	case "casual":
+	  		this.radioButtonCasual.setSelected(true);
+	  		this.cvColor="casual";
+	  		break;
+	  	case "oldstyle":
+	  		this.radioButtonOldstyle.setSelected(true);
+	  		this.cvColor="oldstyle";
+	  		break;
+	  	case "empty":
+	  		this.radioButtonEmpty.setSelected(true);
+	  		this.cvColor="empty";
+	  		break;
+	  };
+	  
+      
+  }
   
   // Setzt das Bild.
   public void getPicture(){
@@ -91,6 +152,7 @@ public class CVGui extends JFrame implements ActionListener{
       //only jpg-files selectable
       FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG Images", "jpg", "JPG");
       chooser.setFileFilter(filter);
+      
       
                       //Soll auf Gui zugreifen v
       int returnVal = chooser.showOpenDialog(this);
@@ -285,7 +347,9 @@ public class CVGui extends JFrame implements ActionListener{
 				this.cvSectionContent[i].setText((i+1)+".Entry");
 			}
 		}
+		// Button um inhalt in die Section zu schreiben.
 		if (arg0.getSource() == this.cvProperty){
+			//Cvline in die Setion schreiben
 			if(this.cvLineChoosen == true){
 				String[] entry = {this.cvSectionContent[0].getText(),this.cvSectionContent[1].getText()};
 				CVLine cvProperty = new CVLine(entry);
@@ -302,6 +366,7 @@ public class CVGui extends JFrame implements ActionListener{
 				}
 				this.sectionEntry.setText(entrys);
 			}
+			//CvEntry in die Section speichern
 			else{
 				String[] entry = {this.cvSectionContent[0].getText(),this.cvSectionContent[1].getText(),this.cvSectionContent[2].getText(),this.cvSectionContent[3].getText(),this.cvSectionContent[4].getText(),this.cvSectionContent[5].getText()};
 				CVEntry cvProperty = new CVEntry(entry);
@@ -362,6 +427,9 @@ public class CVGui extends JFrame implements ActionListener{
 		}
 		if(arg0.getSource() == this.radioButtonEmpty){
 			this.cvTheme = "empty";
+		}
+		if(arg0.getSource()== this.load){
+			this.loadCV();
 		}
 	}	
   

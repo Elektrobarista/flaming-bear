@@ -36,6 +36,7 @@ public class CurriculumVitae {
   String[] adress = new String[2];
   BufferedWriter curriculumVitae;
   CVTheme theme = new CVTheme();
+  int exsistingSections = 0;
   public ArrayList<Section> sections;
   
   enum LanguageKnowledge {
@@ -65,11 +66,8 @@ public class CurriculumVitae {
   
   // Methode zum laden der Daten aus einer .cv Datei
    
-  public void loadCV(){    
-    Scanner scanner = new Scanner(System.in); 
-    // Pfad der zu ladenden Datei wird durch Benutzer Eingabe eingelesen.
-    System.out.println("In welcher Datei befinden sich ihre CV-Daten?(c:\\User\\ich.cv)");
-    String path = scanner.nextLine(); scanner.close(); try{
+  public void loadCV(String path){    
+	  try{
       // EinBufferdReader zum lesen der Datei wird angelegt.
       BufferedReader readCv = new BufferedReader(new FileReader(new File(path))); 
       boolean moreDataExsists = true;
@@ -80,22 +78,55 @@ public class CurriculumVitae {
         if(readLine != null){ 
           switch (readLine){
             //Es wird je nachdem welches Schlüsselwort eingelesen wurde eine ander Klassenvariable gesetzt. 
+          	case "#Theme":
+          		this.theme.setColor(readCv.readLine().replaceAll("Color: ", ""));
+          		this.theme.setStyle(readCv.readLine().replaceAll("Style: ", ""));
+          		break;
             case "#PersonalData" :
             
-            this.personalData[0]=readCv.readLine().toString().replaceAll("Vorname: ","");
-            this.personalData[1]=readCv.readLine().toString().replaceAll("Nachname: ", "");
-            this.personalData[2]=readCv.readLine().toString().replaceAll("Bild: ", "");
+            	this.personalData[0]=readCv.readLine().toString().replaceAll("Vorname: ","");
+            	this.personalData[1]=readCv.readLine().toString().replaceAll("Nachname: ", "");
+            	this.personalData[2]=readCv.readLine().toString().replaceAll("Bild: ", "");
             break;
             
             case "#Kontaktdaten" :
-            this.email=readCv.readLine().toString().replaceAll("Email: ", "");
-            this.phoneNumber =readCv.readLine().toString().replaceAll("Telefonnummer: ", "");
-            this.adress[0]=readCv.readLine().toString().replaceAll("Straße: ", "");
-            this.adress[1]=readCv.readLine().toString().replaceAll("Wohnort: ", "");
+            	this.email=readCv.readLine().toString().replaceAll("Email: ", "");
+            	this.phoneNumber =readCv.readLine().toString().replaceAll("Telefonnummer: ", "");
+            	this.adress[0]=readCv.readLine().toString().replaceAll("Straße: ", "");
+            	this.adress[1]=readCv.readLine().toString().replaceAll("Wohnort: ", "");
             break;
             
             case "##" : 
+            	this.sections.add(new Section(readCv.readLine()));
+            	Boolean sectionDataExsists = true;
+            	String sectionEntry= "";
             
+            	while(sectionDataExsists == true){
+            		sectionEntry = readCv.readLine();
+            		switch(sectionEntry){
+            		//Muss nochmal überprüft werden
+            			case "--":
+            				String[] entry = new String[6];
+            				for (int i = 0; i < entry.length; i++){
+            					entry[i] = readCv.readLine(); 
+            				}
+            				CVEntry cvProperty = new CVEntry(entry);
+            				this.sections.get(this.exsistingSections).addEntry(cvProperty);
+            				break;
+            			case "-":
+            				String[] line = new String[2];
+            				for (int i = 0; i < line.length; i++){
+            					line[i] = readCv.readLine(); 
+            				}
+            				CVLine cvPropert = new CVLine(line);
+            				this.sections.get(this.exsistingSections).addEntry(cvPropert);
+            				break;
+            			case"*":
+            				sectionDataExsists = false;
+            				break;
+            		}
+            this.exsistingSections++;	
+            }
             break;
            
             
@@ -104,7 +135,7 @@ public class CurriculumVitae {
             moreDataExsists = false;
             break; 
           }
-        System.out.println(readLine); } 
+        } 
         else{ 
           moreDataExsists = false;
         }
