@@ -40,6 +40,10 @@ public class CVGui extends JFrame implements ActionListener{
   JTextField phone; 
   JTextField email;
   
+  //Color und Theme
+  String cvColor = "blue";
+  String cvTheme = "classic";
+  
   //Klassenvariablen
   ImageIcon addPicture;
   JButton addPic;
@@ -49,6 +53,13 @@ public class CVGui extends JFrame implements ActionListener{
   JButton create;
   JPanel contactdetails;
   JRadioButton radioButtonRed;
+  JRadioButton radioButtonBlue;
+  JRadioButton radioButtonGreen;
+  JRadioButton radioButtonOrange;
+  JRadioButton radioButtonClassic;
+  JRadioButton radioButtonOldstyle;
+  JRadioButton radioButtonCasual;
+  JRadioButton radioButtonEmpty;
   JTextField sectionName;
   JComboBox sections;
   JRadioButton cvEntry;
@@ -56,21 +67,22 @@ public class CVGui extends JFrame implements ActionListener{
   JTextField[] cvSectionContent = new JTextField[6];
   JTextArea sectionEntry;
   Boolean cvLineChoosen;
-  String picture;
+  String picture = "";
   
   //
   public void writeCV(){
-	  	/*this.cv.setFirstName(this.firstname.getText());
-	  	this.cv.setLastName(this.lastname.getText());
-	  	this.cv.setStreet(this.street.getText());
-	  	this.cv.setStreetNumber(this.number.getText());
-	  	this.cv.setPostalCode(this.postcode.getText());
-	  	this.cv.setCity(this.city.getText());
-	  	this.cv.setPhone(this.phone.getText());
-	  	this.cv.setMobile(this.email.getText());
-	  	this.cv.setPicture(this.picture);
+	  	this.cv.personalData[0] = this.firstname.getText();
+	  	this.cv.personalData[1] = this.lastname.getText();
+	  	this.cv.personalData[2] = this.picture;
+	  	this.cv.adress[0] = this.street.getText()+" "+this.number.getText();
+	  	this.cv.adress[1] = this.postcode.getText()+" "+ this.city.getText();
+	  	this.cv.phoneNumber = this.phone.getText();
+	  	this.cv.email = this.email.getText();
+	  	this.cv.theme.setColor(this.cvColor);
+	  	this.cv.theme.setStyle(this.cvTheme);
+	 
 	  	this.cv.writeCV("c:\\users\\lars\\test123.tex");
-	  	*/
+	  	
   }
   
   // Setzt das Bild.
@@ -162,48 +174,59 @@ public class CVGui extends JFrame implements ActionListener{
     
     //Color
     JLabel color = new JLabel("CV Modern Color:");
-    JRadioButton orange = new JRadioButton("Orange");
+    this.radioButtonOrange = new JRadioButton("Orange");
     Color colorOrange = new Color((float)0.95,(float)0.55,(float)0.15);
-    orange.setForeground(colorOrange);
-    JRadioButton green = new JRadioButton("Green");
+    this.radioButtonOrange.setForeground(colorOrange);
+    this.radioButtonGreen = new JRadioButton("Green");
     Color colorGreen = new Color((float)0.35,(float)0.70,(float)0.30);
-    green.setForeground(colorGreen);
-    JRadioButton blue = new JRadioButton("Blue");
+    this.radioButtonGreen.setForeground(colorGreen);
+    this.radioButtonBlue = new JRadioButton("Blue");
     Color colorBlue = new Color((float)0.22,(float)0.45,(float)0.70);
-    blue.setForeground(colorBlue);
+    this.radioButtonBlue.setForeground(colorBlue);
     this.radioButtonRed = new JRadioButton("Red");
     Color colorRed = new Color((float)0.95,(float)0.20,(float)0.20);
     this.radioButtonRed.setForeground(colorRed);
+    //Actionlistner Farbe
+    this.radioButtonOrange.addActionListener(this);
+    this.radioButtonBlue.addActionListener(this);
+    this.radioButtonRed.addActionListener(this);
+    this.radioButtonGreen.addActionListener(this);
     
     //Theme
     JLabel theme = new JLabel("CV Modern Theme:");
-    JRadioButton classic = new JRadioButton ("Classic");
-    JRadioButton casual = new JRadioButton ("Casual");
-    JRadioButton oldstyle = new JRadioButton ("Oldstyle");
-    JRadioButton empty = new JRadioButton ("Empty");
+    this.radioButtonClassic = new JRadioButton ("Classic");
+    this.radioButtonCasual = new JRadioButton ("Casual");
+    this.radioButtonOldstyle = new JRadioButton ("Oldstyle");
+    this.radioButtonEmpty = new JRadioButton ("Empty");
+    //Actionlistener Theme
+    
+    this.radioButtonClassic.addActionListener(this);
+    this.radioButtonCasual.addActionListener(this);
+    this.radioButtonOldstyle.addActionListener(this);
+    this.radioButtonEmpty.addActionListener(this);
     
     ButtonGroup colorGroup = new ButtonGroup();
-    colorGroup.add(green);
-    colorGroup.add(blue);
+    colorGroup.add(this.radioButtonGreen);
+    colorGroup.add(this.radioButtonBlue);
     colorGroup.add(this.radioButtonRed);
-    colorGroup.add(orange);
+    colorGroup.add(this.radioButtonOrange);
     
     ButtonGroup themeGroup = new ButtonGroup();
-    themeGroup.add(classic);
-    themeGroup.add(casual);
-    themeGroup.add(oldstyle);
-    themeGroup.add(empty);
+    themeGroup.add(this.radioButtonClassic);
+    themeGroup.add(this.radioButtonCasual);
+    themeGroup.add(this.radioButtonOldstyle);
+    themeGroup.add(this.radioButtonEmpty);
     
     cvPreferences.add(color);
-    cvPreferences.add(orange);
-    cvPreferences.add(green);
-    cvPreferences.add(blue);
+    cvPreferences.add(this.radioButtonOrange);
+    cvPreferences.add(this.radioButtonGreen);
+    cvPreferences.add(this.radioButtonBlue);
     cvPreferences.add(this.radioButtonRed);
     cvPreferences.add(theme);
-    cvPreferences.add(classic);
-    cvPreferences.add(casual);
-    cvPreferences.add(oldstyle);
-    cvPreferences.add(empty);
+    cvPreferences.add(this.radioButtonClassic);
+    cvPreferences.add(this.radioButtonCasual);
+    cvPreferences.add(this.radioButtonOldstyle);
+    cvPreferences.add(this.radioButtonEmpty);
    
    //CvContent
    this.sectionName = new JTextField("New Section Name");
@@ -315,6 +338,30 @@ public class CVGui extends JFrame implements ActionListener{
 		}
 		if(arg0.getSource() == this.create ){
 			this.writeCV();
+		}
+		if(arg0.getSource() == this.radioButtonOrange){
+			this.cvColor = "orange";
+		}
+		if(arg0.getSource() == this.radioButtonRed){
+			this.cvColor = "red";
+		}
+		if(arg0.getSource() == this.radioButtonGreen){
+			this.cvColor = "green";
+		}
+		if(arg0.getSource() == this.radioButtonBlue){
+			this.cvColor = "blue";
+		}
+		if(arg0.getSource() == this.radioButtonClassic){
+			this.cvTheme = "classic";
+		}
+		if(arg0.getSource() == this.radioButtonCasual){
+			this.cvTheme = "casual";
+		}
+		if(arg0.getSource() == this.radioButtonOldstyle){
+			this.cvTheme = "oldstyle";
+		}
+		if(arg0.getSource() == this.radioButtonEmpty){
+			this.cvTheme = "empty";
 		}
 	}	
   

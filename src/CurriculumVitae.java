@@ -33,9 +33,7 @@ public class CurriculumVitae {
   String phoneNumber = new String();
   String email = new String();
   String[] personalData = new String[3];
-  String[][] education = new String[2][6];
   String[] adress = new String[2];
-  String[][] language = new String[3][6];
   BufferedWriter curriculumVitae;
   CVTheme theme = new CVTheme();
   public ArrayList<Section> sections;
@@ -96,26 +94,10 @@ public class CurriculumVitae {
             this.adress[1]=readCv.readLine().toString().replaceAll("Wohnort: ", "");
             break;
             
-            case "#Ausbildung" : 
-            for (int i=0;i<(this.education.length) ;i++ ){ 
-              for (int j=0;j<(this.education[0].length);j++ ) {
-              this.education[i][j]=readCv.readLine().toString().replaceAll("--", ""); }
-            } 
-            break;
+            case "##" : 
             
-            case "#Sprache" : 
-            for (int i=0;i<6 ;i++ ) {
-              this.language[i][0]=readCv.readLine().toString().replaceAll("--", "");
-              this.langknowString[i]=readCv.readLine().toString().replaceAll("--", "");
-              if (this.langknowString[i].equals("Muttersprache")) {
-                this.langknow[i]=LanguageKnowledge.MUTTERSPRACHE; 
-              }else if(this.langknowString[i].equals("fließend in Wort und Schrift")){
-                this.langknow[i]=LanguageKnowledge.FLIESSEND; 
-              }else if(this.langknowString[i].equals("Grundkenntnisse")){
-                this.langknow[i]=LanguageKnowledge.GRUNDKENNTNISSE; 
-              } 
-            }
             break;
+           
             
             case "$":  
             readCv.close(); 
@@ -184,19 +166,7 @@ public class CurriculumVitae {
         + this.lineSeparator);
         writeCv.write("Wohnort: " + this.adress[1]
         + this.lineSeparator);
-        writeCv.write("#Ausbildung" + this.lineSeparator);
-        for (int i = 0; i < (this.education.length); i++) {
-          for (int j = 0; j < (this.education[0].length); j++) {
-            writeCv.write(this.education[i][j]
-            + this.lineSeparator);
-          }
-        }
-        
-        writeCv.write("#Sprachen" + this.lineSeparator);
-        /*for (int i = 0; i < 6; i++) {
-        writeCv.write(this.language[i] + this.lineSeparator);
-        writeCv.write(this.langknow[i] + this.lineSeparator);
-        }*/
+    
         writeCv.write("$");
         writeCv.close();
       } catch (IOException eq) {
