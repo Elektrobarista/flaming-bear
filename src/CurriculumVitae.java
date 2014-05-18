@@ -14,10 +14,15 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+
+
+
 
 public class CurriculumVitae {
   // Klassenvariablen
@@ -33,6 +38,7 @@ public class CurriculumVitae {
   String[][] language = new String[3][6];
   BufferedWriter curriculumVitae;
   CVTheme theme = new CVTheme();
+  public ArrayList<Section> sections;
   
   enum LanguageKnowledge {
     MUTTERSPRACHE("Muttersprache"), FLIESSEND(
@@ -53,8 +59,14 @@ public class CurriculumVitae {
   public String[] langknowString = new String[6];
   public LanguageKnowledge[] langknow = new LanguageKnowledge[6];
   
-  // Methode zum laden der Daten aus einer .cv Datei
   
+  //Konstruktor
+  public CurriculumVitae(){
+		sections = new ArrayList<Section>();
+	}
+  
+  // Methode zum laden der Daten aus einer .cv Datei
+   
   public void loadCV(){    
     Scanner scanner = new Scanner(System.in); 
     // Pfad der zu ladenden Datei wird durch Benutzer Eingabe eingelesen.
@@ -372,14 +384,9 @@ public class CurriculumVitae {
         curriculumVitae.write(this.convertUmlaut(this.writeCVLine("", adress[1])) + lineSeparator);
         curriculumVitae.write(this.convertUmlaut(this.writeEmailLine()) + lineSeparator);
         curriculumVitae.write(this.writeMobileLine()+ lineSeparator);
-        curriculumVitae.write(lineSeparator+"%section for education"+lineSeparator);
-        curriculumVitae.write("\\section{Ausbildung}"+ lineSeparator);
-        curriculumVitae.write(this.convertUmlaut(this.createCVEntry(education[0])) + lineSeparator);
-        curriculumVitae.write(this.convertUmlaut(this.createCVEntry(education[1])) + lineSeparator);
-        curriculumVitae.write(lineSeparator+"%section for language"+lineSeparator);
-        curriculumVitae.write("\\section{Sprachen}" + lineSeparator);
-        curriculumVitae.write(this.convertUmlaut(this.createCVEntry(language[0])) + lineSeparator);
-        curriculumVitae.write(this.convertUmlaut(this.createCVEntry(language[1])) + lineSeparator);
+        
+        for (Section s : sections)
+			curriculumVitae.write(this.convertUmlaut(s.createSection()));
         
         /*
         * for (int i=0;i<language.length ;i++ ) { if
@@ -399,8 +406,6 @@ public class CurriculumVitae {
         curriculumVitae.write("InvalidEmail:Keine g\"ultige Email-Adresse");
       } catch (InvalidCVLine e) {
         curriculumVitae.write("InvalidCVLine:Kein zweiter eintrag.");
-      } catch (InvalidCVEntry e) {
-        curriculumVitae.write("InvalidCVEntry:Kein erster oder zweiter eintrag.");
       } catch (InvalidPicture e) {
         curriculumVitae.write("InvalidPicture:Kein Bild gefunden.");
       } catch (InvalidName e) {
@@ -414,6 +419,15 @@ public class CurriculumVitae {
       System.out.println("Fehler Datei kann nicht erstellt werde.");
     }
   }
+  //Von Beispielprogramm
+  public void addSection(String name) throws IllegalArgumentException {
+		if (name==null || name.equals(""))
+			throw new IllegalArgumentException();
+		sections.add(new Section(name));
+	}
+  public Section[] getSections() {
+		return sections.toArray(new Section[sections.size()]);
+	}
   
   public void compressCV(String path) throws IOException {
     if (path.endsWith(".zip")) {
