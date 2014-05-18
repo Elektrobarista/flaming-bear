@@ -51,6 +51,7 @@ public class CVGui extends JFrame implements ActionListener{
   JButton cvProperty;
   JButton load;
   JButton create;
+  JButton save;
   JPanel contactdetails;
   JRadioButton radioButtonRed;
   JRadioButton radioButtonBlue;
@@ -96,6 +97,12 @@ public class CVGui extends JFrame implements ActionListener{
       this.firstname.setText(this.cv.personalData[0]);
 	  this.lastname.setText(this.cv.personalData[1]);
 	  this.picture=this.cv.personalData[2];
+	  System.out.println(this.picture);
+	  ImageIcon newIcon = new ImageIcon(this.picture);
+	  Image img = newIcon.getImage().getScaledInstance(137,177,java.awt.Image.SCALE_SMOOTH);
+	  this.addPicture=new ImageIcon(img); 
+	  this.addPic.setText("");
+	  this.addPic.setIcon(this.addPicture);
 	  //Muss noch geteilt werden
 	  this.street.setText(this.cv.adress[0]);
 	  this.number.setText(this.cv.adress[0]);
@@ -104,7 +111,7 @@ public class CVGui extends JFrame implements ActionListener{
 	  this.phone.setText(this.cv.phoneNumber);
 	  this.email.setText(this.cv.email);
 	  for(int i = 0; i<this.cv.exsistingSections;i++){
-		  this.sections.addItem(this.cv.sections.get(i).getName());
+		  this.sections.addItem(this.cv.sections.get(0).getName());
 	  }
 	  switch(this.cv.theme.getColor()){
 	  	case "orange":
@@ -127,23 +134,45 @@ public class CVGui extends JFrame implements ActionListener{
 	  switch(this.cv.theme.getStyle()){
 	  	case "classic":
 	  		this.radioButtonClassic.setSelected(true);
-	  		this.cvColor="classic";
+	  		this.cvTheme="classic";
 	  		break;
 	  	case "casual":
 	  		this.radioButtonCasual.setSelected(true);
-	  		this.cvColor="casual";
+	  		this.cvTheme="casual";
 	  		break;
 	  	case "oldstyle":
 	  		this.radioButtonOldstyle.setSelected(true);
-	  		this.cvColor="oldstyle";
+	  		this.cvTheme="oldstyle";
 	  		break;
 	  	case "empty":
 	  		this.radioButtonEmpty.setSelected(true);
-	  		this.cvColor="empty";
+	  		this.cvTheme="empty";
 	  		break;
 	  };
 	  
       
+  }
+  
+  //SaveCV
+  public void saveCV(){
+	  	System.out.println(this.cv.exsistingSections);
+	  	this.cv.personalData[0] = this.firstname.getText();
+	  	this.cv.personalData[1] = this.lastname.getText();
+	  	this.cv.personalData[2] = this.picture;
+	  	this.cv.adress[0] = this.street.getText()+" "+this.number.getText();
+	  	this.cv.adress[1] = this.postcode.getText()+" "+ this.city.getText();
+	  	this.cv.phoneNumber = this.phone.getText();
+	  	this.cv.email = this.email.getText();
+	  	this.cv.theme.setColor(this.cvColor);
+	  	this.cv.theme.setStyle(this.cvTheme);
+	  	 JFileChooser chooser = new JFileChooser();
+	 	//only cv-files selectable
+	       FileNameExtensionFilter filter = new FileNameExtensionFilter("CV-Save", "cv");
+	       chooser.setFileFilter(filter);
+	       int returnVal = chooser.showOpenDialog(this);
+	       if(returnVal == JFileChooser.APPROVE_OPTION) {
+	    	   this.cv.saveCV(chooser.getSelectedFile().toString()); 
+	       }
   }
   
   // Setzt das Bild.
@@ -181,7 +210,8 @@ public class CVGui extends JFrame implements ActionListener{
     //create buttons
     this.load = new JButton("load");
     this.load.addActionListener(this);
-    JButton save = new JButton("save");
+    this.save = new JButton("save");
+    this.save.addActionListener(this);
     this.create = new JButton("create");
     this.create.addActionListener(this);
     
@@ -383,6 +413,7 @@ public class CVGui extends JFrame implements ActionListener{
 				}
 				this.sectionEntry.setText(entrys);
 			}
+			this.cv.exsistingSections++;
 		}
 		if(arg0.getSource()== this.sections){
 			String entrys = "";
@@ -430,6 +461,9 @@ public class CVGui extends JFrame implements ActionListener{
 		}
 		if(arg0.getSource()== this.load){
 			this.loadCV();
+		}
+		if(arg0.getSource()==this.save){
+			this.saveCV();
 		}
 	}	
   

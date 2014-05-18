@@ -120,13 +120,15 @@ public class CurriculumVitae {
             				}
             				CVLine cvPropert = new CVLine(line);
             				this.sections.get(this.exsistingSections).addEntry(cvPropert);
+            				
             				break;
             			case"*":
             				sectionDataExsists = false;
             				break;
             		}
-            this.exsistingSections++;	
+            
             }
+            this.exsistingSections++;
             break;
            
             
@@ -197,7 +199,33 @@ public class CurriculumVitae {
         + this.lineSeparator);
         writeCv.write("Wohnort: " + this.adress[1]
         + this.lineSeparator);
-    
+        
+        for (int i = 0; i < this.exsistingSections; i++){
+        	writeCv.write("##"+this.lineSeparator);
+        	writeCv.write(this.sections.get(i).getName()+this.lineSeparator);
+        	for(int j = 0; j< this.sections.get(i).getEntries().length;j++){
+        		if(this.sections.get(i).getEntries()[j].getValues().length==6){
+        			writeCv.write("--"+this.lineSeparator);
+        			for(int k = 0; k<6;k++){
+        				writeCv.write(this.sections.get(i).getEntries()[j].getValues()[k]+this.lineSeparator);
+        			}
+        		}
+        		else{
+        			writeCv.write("-"+this.lineSeparator);
+        			for(int k = 0; k<2;k++){
+        				writeCv.write(this.sections.get(i).getEntries()[j].getValues()[k]+this.lineSeparator);
+        			}
+        		}
+        	}
+			/*if(this.sections.get(this.sections.getSelectedIndex()).getEntries()[i] == null){
+				break;
+			}
+			for(int j = 0 ;j<this.sections.get(this.sections.getSelectedIndex()).getEntries()[i].getValues().length;j++){
+					writeCv.write(this.sections.get(this.sections.getSelectedIndex()).getEntries()[i].getValues()[j]+" ");	
+			}*/
+			writeCv.write("*"+this.lineSeparator);	
+		}
+        
         writeCv.write("$");
         writeCv.close();
       } catch (IOException eq) {
