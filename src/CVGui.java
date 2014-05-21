@@ -160,7 +160,6 @@ public class CVGui extends JFrame implements ActionListener{
   
   //SaveCV
   public void saveCV(){
-	  	System.out.println(this.cv.exsistingSections);
 	  	this.cv.personalData[0] = this.firstname.getText();
 	  	this.cv.personalData[1] = this.lastname.getText();
 	  	this.cv.personalData[2] = this.picture;
@@ -171,12 +170,10 @@ public class CVGui extends JFrame implements ActionListener{
 	  	this.cv.theme.setColor(this.cvColor);
 	  	this.cv.theme.setStyle(this.cvTheme);
 	  	 JFileChooser chooser = new JFileChooser();
-	 	//only cv-files selectable
-	       FileNameExtensionFilter filter = new FileNameExtensionFilter("CV-Save", "cv");
-	       chooser.setFileFilter(filter);
-	       int returnVal = chooser.showOpenDialog(this);
+	  	 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	       int returnVal = chooser.showSaveDialog(this);
 	       if(returnVal == JFileChooser.APPROVE_OPTION) {
-	    	   this.cv.saveCV(chooser.getSelectedFile().toString()); 
+	    	   this.cv.saveCV(chooser.getSelectedFile().toString()+"\\"+this.cv.personalData[1]+".cv"); 
 	       }
   }
   
