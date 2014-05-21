@@ -63,10 +63,15 @@ public class CurriculumVitae {
   public CurriculumVitae(){
 		sections = new ArrayList<Section>();
 	}
+  public void clearSections(){
+	  sections = new ArrayList<Section>();
+  }
   
   // Methode zum laden der Daten aus einer .cv Datei
    
-  public void loadCV(String path){    
+  public void loadCV(String path){ 
+	  sections = new ArrayList<Section>();
+	  this.exsistingSections = 0;
 	  try{
       // EinBufferdReader zum lesen der Datei wird angelegt.
       BufferedReader readCv = new BufferedReader(new FileReader(new File(path))); 

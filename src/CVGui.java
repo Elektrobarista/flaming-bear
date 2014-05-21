@@ -114,6 +114,7 @@ public class CVGui extends JFrame implements ActionListener{
 	  this.city.setText(this.cv.adress[1]);
 	  this.phone.setText(this.cv.phoneNumber);
 	  this.email.setText(this.cv.email);
+	  this.sections.removeAllItems();
 	  for(int i = 0; i<this.cv.exsistingSections;i++){
 		  this.sections.addItem(this.cv.sections.get(i).getName());
 	  }
@@ -307,6 +308,7 @@ public class CVGui extends JFrame implements ActionListener{
     this.radioButtonGreen.setForeground(colorGreen);
     this.radioButtonBlue = new JRadioButton("Blue");
     Color colorBlue = new Color((float)0.22,(float)0.45,(float)0.70);
+    this.radioButtonBlue.setSelected(true);
     this.radioButtonBlue.setForeground(colorBlue);
     this.radioButtonRed = new JRadioButton("Red");
     Color colorRed = new Color((float)0.95,(float)0.20,(float)0.20);
@@ -320,6 +322,7 @@ public class CVGui extends JFrame implements ActionListener{
     //Theme
     JLabel theme = new JLabel("CV Modern Theme:");
     this.radioButtonClassic = new JRadioButton ("Classic");
+    this.radioButtonClassic.setSelected(true);
     this.radioButtonCasual = new JRadioButton ("Casual");
     this.radioButtonOldstyle = new JRadioButton ("Oldstyle");
     this.radioButtonEmpty = new JRadioButton ("Empty");
@@ -474,7 +477,8 @@ public class CVGui extends JFrame implements ActionListener{
 		}
 		if(arg0.getSource()== this.sections){
 			String entrys = "";
-			if (this.cv.sections.get(this.sections.getSelectedIndex())!= null){
+			if (this.sections.getSelectedIndex()!= -1)
+			if (this.cv.sections.get(this.sections.getSelectedIndex()) != null){
 				
 			
 				for (int i = 0; i < this.cv.sections.get(this.sections.getSelectedIndex()).getEntries().length; i++){
