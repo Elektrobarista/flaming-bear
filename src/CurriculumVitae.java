@@ -188,6 +188,9 @@ public class CurriculumVitae {
         // Erzeugt einen BufferedWriter zum schreiben der Datei.
         BufferedWriter writeCv = new BufferedWriter(
         new FileWriter(datei));
+        writeCv.write("#Theme"+this.lineSeparator);
+        writeCv.write("Color: "+this.theme.getColor()+this.lineSeparator);
+        writeCv.write("Style: "+this.theme.getStyle()+this.lineSeparator);
         writeCv.write("#PersonalData" + this.lineSeparator);
         writeCv.write("Vorname: " + this.personalData[0]
         + this.lineSeparator);
