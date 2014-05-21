@@ -23,9 +23,21 @@ import javax.swing.JTextField;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import sun.applet.Main;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.channels.FileChannel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -87,7 +99,80 @@ public class CVGui extends JFrame implements ActionListener{
 	  	this.cv.theme.setColor(this.cvColor);
 	  	this.cv.theme.setStyle(this.cvTheme);
 	 
-	  	this.cv.writeCV("c:\\users\\lars\\test123.tex");
+	  	JFileChooser chooser = new JFileChooser();
+	  	 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	       int returnVal = chooser.showSaveDialog(this);
+	       if(returnVal == JFileChooser.APPROVE_OPTION) {
+	    	   this.cv.writeCV(chooser.getSelectedFile().toString()+"\\"+this.cv.personalData[1]+"_"+this.cv.personalData[0]+".tex"); 
+	       }
+	       File picture = new File(this.cv.personalData[2]);
+	       File newpicture = new File(chooser.getSelectedFile().toString()+"\\"+picture.getName());
+	       try {
+			newpicture.createNewFile();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+	       if (picture.exists()== true){
+	    	   FileChannel inChannel = null; 
+	           FileChannel outChannel = null; 
+	           try { 
+	               inChannel = new FileInputStream(picture).getChannel(); 
+	               outChannel = new FileOutputStream(newpicture).getChannel(); 
+	               inChannel.transferTo(0, inChannel.size(), outChannel); 
+	           } catch (IOException e) { 
+	               try {
+					throw e;
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} 
+	           } finally { 
+	               try { 
+	                   if (inChannel != null) 
+	                       inChannel.close(); 
+	                   if (outChannel != null) 
+	                       outChannel.close(); 
+	               } catch (IOException e) {} 
+	           } 
+	       }
+	       try {
+	           Runtime runtime = Runtime.getRuntime();
+	   
+	           // Erste Shell oeffnen...
+	           // In dieser Instanz wird schon in das
+	           // Laufwerk:\Verzeichnis gewechselt,
+	           // jedoch kein neues Fenster geoeffnet.
+	           // Daher wird aus dieser Instanz spaeter noch einmal
+	           // eine weitere Shell mit "start" aufgerufen, die
+	           // sich dann schon im richtigen Verzeichnis befindet.
+	           Process process = runtime.exec("cmd.exe /K"); 
+	           OutputStream os = process.getOutputStream();
+	           OutputStreamWriter ow = new OutputStreamWriter(os);
+	           BufferedWriter bw = new BufferedWriter(ow);
+	   
+	           // Wechel des Laufwerks
+	           bw.write("c:");
+	           bw.newLine();
+	           // Verzeichnis wechseln
+	           bw.write("cd "+chooser.getSelectedFile().toString());
+	           bw.newLine();
+	           System.out.println("pdflatex \""+this.cv.personalData[1]+"_"+this.cv.personalData[0]+".tex\"");
+	           bw.write("pdflatex \""+chooser.getSelectedFile().toString()+"\\"+this.cv.personalData[1]+"_"+this.cv.personalData[0]+".tex\""); 
+	           bw.newLine();
+	           bw.write(chooser.getSelectedFile().toString()+"\\"+this.cv.personalData[1]+"_"+this.cv.personalData[0]+".pdf"); 
+	           bw.newLine();
+	   
+	           // Hier machen weitere Anweisungen keinen Sinn, da diese in der
+	           // ersten (unsichtbaren) Instanz der Shell ausgeführt werden wuerden.
+	   
+	           bw.flush();
+	           bw.close();
+	           ow.close();
+	           os.close();
+	   
+	        } catch (IOException ex) {
+	           Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+	        }
 	  	
   }
   public void loadCV(){
