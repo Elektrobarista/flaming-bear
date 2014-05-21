@@ -1,7 +1,12 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
@@ -40,11 +45,11 @@ public class CVGui extends JFrame implements ActionListener{
   JTextField phone; 
   JTextField email;
   
-  //Color und Theme
+  //Color and Theme
   String cvColor = "blue";
   String cvTheme = "classic";
   
-  //Klassenvariablen
+  //class variables
   ImageIcon addPicture;
   JButton addPic;
   JButton addSection;
@@ -103,7 +108,6 @@ public class CVGui extends JFrame implements ActionListener{
 	  this.addPicture=new ImageIcon(img); 
 	  this.addPic.setText("");
 	  this.addPic.setIcon(this.addPicture);
-	  //Muss noch geteilt werden
 	  this.street.setText(this.cv.adress[0]);
 	  this.number.setText(this.cv.adress[0]);
 	  this.postcode.setText(this.cv.adress[1]);
@@ -111,7 +115,7 @@ public class CVGui extends JFrame implements ActionListener{
 	  this.phone.setText(this.cv.phoneNumber);
 	  this.email.setText(this.cv.email);
 	  for(int i = 0; i<this.cv.exsistingSections;i++){
-		  this.sections.addItem(this.cv.sections.get(0).getName());
+		  this.sections.addItem(this.cv.sections.get(i).getName());
 	  }
 	  switch(this.cv.theme.getColor()){
 	  	case "orange":
@@ -175,7 +179,7 @@ public class CVGui extends JFrame implements ActionListener{
 	       }
   }
   
-  // Setzt das Bild.
+  // set picture
   public void getPicture(){
 	  JFileChooser chooser = new JFileChooser();
       //only jpg-files selectable
@@ -183,7 +187,7 @@ public class CVGui extends JFrame implements ActionListener{
       chooser.setFileFilter(filter);
       
       
-                      //Soll auf Gui zugreifen v
+
       int returnVal = chooser.showOpenDialog(this);
       if(returnVal == JFileChooser.APPROVE_OPTION) {
     	  this.picture = chooser.getSelectedFile().toString();
@@ -228,38 +232,67 @@ public class CVGui extends JFrame implements ActionListener{
     
     //new Panel contact details
     this.contactdetails=new JPanel();
+    this.contactdetails.setLayout(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints(); //container for GridBagLayout in tab contactdetails
+    c.fill = GridBagConstraints.HORIZONTAL;
     jtp.addTab("Contact Details",contactdetails);
-    JPanel cvPreferences=new JPanel();
+    JPanel cvPreferences=new JPanel(new GridLayout(2,2));
     jtp.addTab("Preferences",cvPreferences);
-    JPanel cvContent=new JPanel();
+    JPanel cvContent=new JPanel(new GridBagLayout());
+    GridBagConstraints d = new GridBagConstraints();
     jtp.addTab("Content",cvContent);
-    
-    
+    d.fill = GridBagConstraints.ABOVE_BASELINE_LEADING;
+//    d.insets =  new Insets(0,40,40,0);
     
     //ContactDetails
     //TextFields for name, address and email
     this.firstname=new JTextField("First name");
+    c.weightx = 0.1;
+    c.gridx = 0;
+    c.gridy = 0;
+    contactdetails.add(firstname, c);
     this.lastname=new JTextField("Last name");
+    c.weightx = 0.1;
+    c.gridx = 1;
+    c.gridy = 0;
+    contactdetails.add(lastname, c);
     this.street=new JTextField("Street");
+    c.weightx = 0.1;
+    c.gridx = 0;
+    c.gridy = 1;
+    contactdetails.add(street, c);
     this.number=new JTextField("No");
+    c.weightx = 0.1;
+    c.gridx = 1;
+    c.gridy = 1;
+    contactdetails.add(number, c);
     this.postcode=new JTextField("Post code");
-    this.city=new JTextField("City");  
-    this.phone=new JTextField("Phone"); 
+    c.weightx = 0.1;
+    c.gridx = 0;
+    c.gridy = 2;
+    contactdetails.add(postcode, c);
+    this.city=new JTextField("City");
+    c.weightx = 0.1;
+    c.gridx = 1;
+    c.gridy = 2;
+    contactdetails.add(city, c);
+    this.phone=new JTextField("Phone");
+    c.weightx = 0.1;
+    c.gridx = 0;
+    c.gridy = 3;
+    contactdetails.add(phone, c);
     this.email=new JTextField("Email");
-    contactdetails.add(firstname);
-    contactdetails.add(lastname);
-    contactdetails.add(email);
-    contactdetails.add(street);
-    contactdetails.add(number);
-    contactdetails.add(postcode);
-    contactdetails.add(city);
-    contactdetails.add(phone);
-    contactdetails.add(email);
+    c.weightx = 0.1;
+    c.gridx = 1;
+    c.gridy = 3;
+    contactdetails.add(email, c);
     // add Button to load picture
     this.addPic=new JButton("Add Picture",this.addPicture);
-    //??
     this.addPic.setSize(137,177);
-    contactdetails.add(this.addPic);
+    c.weightx = 0.1;
+    c.gridx = 1;
+    c.gridy = 4;
+    contactdetails.add(this.addPic,c);
     this.addPic.addActionListener(this);
     
     //CvPreferences
@@ -278,7 +311,7 @@ public class CVGui extends JFrame implements ActionListener{
     this.radioButtonRed = new JRadioButton("Red");
     Color colorRed = new Color((float)0.95,(float)0.20,(float)0.20);
     this.radioButtonRed.setForeground(colorRed);
-    //Actionlistner Farbe
+    //color Actionlistner
     this.radioButtonOrange.addActionListener(this);
     this.radioButtonBlue.addActionListener(this);
     this.radioButtonRed.addActionListener(this);
@@ -331,23 +364,47 @@ public class CVGui extends JFrame implements ActionListener{
    this.sectionEntry = new JTextArea("");
    
    
-   cvContent.add(this.sectionName);
-   cvContent.add(this.addSection);
-   cvContent.add(this.sections); 
-   cvContent.add(this.cvLine); 
+   d.gridx = 1;
+   d.gridy = 0;
+   d.gridwidth = 2;
+   sectionName.setPreferredSize(new Dimension(180,30));
+   cvContent.add(this.sectionName,d);
+   d.gridx = 3;
+   d.gridy = 0;
+   d.gridwidth = 3;
+   cvContent.add(this.addSection,d);
+   d.gridx = 0;
+   d.gridy = 0;
+   d.gridwidth = 1;
+   cvContent.add(this.sections,d); 
    ButtonGroup entry = new ButtonGroup();
    entry.add(this.cvLine);
    entry.add(this.cvEntry);
    this.cvLine.addActionListener(this);
    this.cvEntry.addActionListener(this);
-   cvContent.add(this.cvEntry); 
+   d.gridx = 0;
+   d.gridy = 1;
+   d.gridwidth = 3;
+   cvContent.add(this.cvEntry,d); 
+   d.gridx = 3;
+   d.gridy = 1;
+   d.gridwidth = 3;
+   cvContent.add(this.cvLine,d); 
   for (int i = 0 ; i<6; i++){
 	   this.cvSectionContent[i] = new JTextField((i+1)+".Entry");
-	   cvContent.add(cvSectionContent[i]);
+	   d.gridx = i;
+	   d.gridy = 2;
+	   d.gridwidth = 1;
+	   d.ipadx = 60;
+	   cvContent.add(cvSectionContent[i],d);
    }
   this.cvProperty = new JButton("CVProperty");
   this.cvProperty.addActionListener(this);
-  cvContent.add(this.cvProperty);
+  d.ipadx = 0;
+  d.gridx = 4;
+  d.gridy = 3;
+  d.gridwidth = 2;
+  cvContent.add(this.cvProperty,d);
   cvContent.add(this.sectionEntry);
 
   }
@@ -361,6 +418,7 @@ public class CVGui extends JFrame implements ActionListener{
 		if (arg0.getSource() == this.addSection){
 			this.cv.addSection(this.sectionName.getText());
 			this.sections.addItem(this.sectionName.getText());
+			this.cv.exsistingSections++;
 			
 		}
 		if (arg0.getSource() == this.cvLine ){
@@ -377,9 +435,9 @@ public class CVGui extends JFrame implements ActionListener{
 				this.cvSectionContent[i].setText((i+1)+".Entry");
 			}
 		}
-		// Button um inhalt in die Section zu schreiben.
+		//action from Button to add content.
 		if (arg0.getSource() == this.cvProperty){
-			//Cvline in die Setion schreiben
+			//write CVLine in section
 			if(this.cvLineChoosen == true){
 				String[] entry = {this.cvSectionContent[0].getText(),this.cvSectionContent[1].getText()};
 				CVLine cvProperty = new CVLine(entry);
@@ -396,7 +454,7 @@ public class CVGui extends JFrame implements ActionListener{
 				}
 				this.sectionEntry.setText(entrys);
 			}
-			//CvEntry in die Section speichern
+			//save CvEntry in section
 			else{
 				String[] entry = {this.cvSectionContent[0].getText(),this.cvSectionContent[1].getText(),this.cvSectionContent[2].getText(),this.cvSectionContent[3].getText(),this.cvSectionContent[4].getText(),this.cvSectionContent[5].getText()};
 				CVEntry cvProperty = new CVEntry(entry);
@@ -413,7 +471,6 @@ public class CVGui extends JFrame implements ActionListener{
 				}
 				this.sectionEntry.setText(entrys);
 			}
-			this.cv.exsistingSections++;
 		}
 		if(arg0.getSource()== this.sections){
 			String entrys = "";

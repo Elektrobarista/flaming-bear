@@ -201,6 +201,7 @@ public class CurriculumVitae {
         + this.lineSeparator);
         
         for (int i = 0; i < this.exsistingSections; i++){
+        	System.out.println(this.exsistingSections);
         	writeCv.write("##"+this.lineSeparator);
         	writeCv.write(this.sections.get(i).getName()+this.lineSeparator);
         	for(int j = 0; j< this.sections.get(i).getEntries().length;j++){
