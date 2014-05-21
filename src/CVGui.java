@@ -1,6 +1,7 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,12 +28,14 @@ import sun.applet.Main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.channels.FileChannel;
@@ -135,44 +138,41 @@ public class CVGui extends JFrame implements ActionListener{
 	               } catch (IOException e) {} 
 	           } 
 	       }
-	       try {
-	           Runtime runtime = Runtime.getRuntime();
-	   
-	           // Erste Shell oeffnen...
-	           // In dieser Instanz wird schon in das
-	           // Laufwerk:\Verzeichnis gewechselt,
-	           // jedoch kein neues Fenster geoeffnet.
-	           // Daher wird aus dieser Instanz spaeter noch einmal
-	           // eine weitere Shell mit "start" aufgerufen, die
-	           // sich dann schon im richtigen Verzeichnis befindet.
-	           Process process = runtime.exec("cmd.exe /K"); 
-	           OutputStream os = process.getOutputStream();
-	           OutputStreamWriter ow = new OutputStreamWriter(os);
-	           BufferedWriter bw = new BufferedWriter(ow);
-	   
-	           // Wechel des Laufwerks
-	           bw.write("c:");
-	           bw.newLine();
-	           // Verzeichnis wechseln
-	           bw.write("cd "+chooser.getSelectedFile().toString());
-	           bw.newLine();
-	           System.out.println("pdflatex \""+this.cv.personalData[1]+"_"+this.cv.personalData[0]+".tex\"");
-	           bw.write("pdflatex \""+chooser.getSelectedFile().toString()+"\\"+this.cv.personalData[1]+"_"+this.cv.personalData[0]+".tex\""); 
-	           bw.newLine();
-	           bw.write(chooser.getSelectedFile().toString()+"\\"+this.cv.personalData[1]+"_"+this.cv.personalData[0]+".pdf"); 
-	           bw.newLine();
-	   
-	           // Hier machen weitere Anweisungen keinen Sinn, da diese in der
-	           // ersten (unsichtbaren) Instanz der Shell ausgeführt werden wuerden.
-	   
-	           bw.flush();
-	           bw.close();
-	           ow.close();
-	           os.close();
-	   
-	        } catch (IOException ex) {
-	           Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+	       String url =  chooser.getSelectedFile() + "\\" + cv.personalData[1] + "_" + cv.personalData[0] + ".tex";
+	       File desktop = new File(chooser.getSelectedFile().toString());
+			ProcessBuilder texBuilder = new ProcessBuilder("pdflatex", url, "-output-directory=" + desktop);
+			texBuilder.redirectErrorStream(true);
+	        Process p = null;
+			try {
+				p = texBuilder.start();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+	        String tmp = null;
+	        String error = null;
+	        BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	        try
+	        {
+           	while ((tmp = br.readLine()) != null)
+	            {
+	                error = error + tmp + "\n";
+	            }
 	        }
+	        catch (IOException ioe)
+	        {
+	            ioe.printStackTrace();
+	        }
+	         try {
+				p.waitFor();
+			} catch (InterruptedException e2) {
+				e2.printStackTrace();
+			}
+			try {
+				Desktop.getDesktop().open(new File(chooser.getSelectedFile() + "\\" + cv.personalData[1] + "_" + cv.personalData[0] + ".pdf"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
 	  	
   }
   public void loadCV(){
