@@ -63,10 +63,15 @@ public class CurriculumVitae {
   public CurriculumVitae(){
 		sections = new ArrayList<Section>();
 	}
+  public void clearSections(){
+	  sections = new ArrayList<Section>();
+  }
   
   // Methode zum laden der Daten aus einer .cv Datei
    
-  public void loadCV(String path){    
+  public void loadCV(String path){ 
+	  sections = new ArrayList<Section>();
+	  this.exsistingSections = 0;
 	  try{
       // EinBufferdReader zum lesen der Datei wird angelegt.
       BufferedReader readCv = new BufferedReader(new FileReader(new File(path))); 
@@ -183,6 +188,9 @@ public class CurriculumVitae {
         // Erzeugt einen BufferedWriter zum schreiben der Datei.
         BufferedWriter writeCv = new BufferedWriter(
         new FileWriter(datei));
+        writeCv.write("#Theme"+this.lineSeparator);
+        writeCv.write("Color: "+this.theme.getColor()+this.lineSeparator);
+        writeCv.write("Style: "+this.theme.getStyle()+this.lineSeparator);
         writeCv.write("#PersonalData" + this.lineSeparator);
         writeCv.write("Vorname: " + this.personalData[0]
         + this.lineSeparator);
@@ -201,6 +209,7 @@ public class CurriculumVitae {
         + this.lineSeparator);
         
         for (int i = 0; i < this.exsistingSections; i++){
+        	System.out.println(this.exsistingSections);
         	writeCv.write("##"+this.lineSeparator);
         	writeCv.write(this.sections.get(i).getName()+this.lineSeparator);
         	for(int j = 0; j< this.sections.get(i).getEntries().length;j++){
