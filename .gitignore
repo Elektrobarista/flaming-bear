@@ -2,4 +2,4 @@
 /src/*.class
 /src/*.~ava
 
-!/aktuelleAufgaben/
+/aktuelleAufgaben/a.txt
