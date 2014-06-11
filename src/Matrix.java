@@ -1,7 +1,18 @@
 
 public class Matrix<T extends Number> {
 	public Matrix(T[][] matrix) {
-		this.matrix = matrix;
+		boolean squareMatrix = true;
+		for(int i = 0; i<matrix.length;i++){
+			if(matrix.length!=matrix[i].length){
+				squareMatrix = false;
+				break;
+			}
+		}
+		if(squareMatrix = true){
+			this.matrix = matrix;
+		}else{
+			this.matrix = null;
+		}
 	}
 
 	public T[][] matrix;
