@@ -1,0 +1,2 @@
+Der Rückgabevektor kann nicht vom Typen der Matrix sein, denn die Rechenoperationen + und - sind nicht für den generischen Typ T definiert.
+Es muss zum rechnen ein cast durchgeführt werden wir wählen hier double.
