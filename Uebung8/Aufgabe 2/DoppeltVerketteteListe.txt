@@ -1,0 +1,41 @@
+Aufgabe 2
+a)  Allgemein
+
+    Vorteile:
+
+    Anzahl der Elemente variabel, da kein zusammenhängender Speicher benötigt wird.
+
+    Also ist an jeder Stelle der Liste jederzeit
+
+    --> Hinzufügen von Elementen möglich
+
+    --> Löschen von Elementen möglich
+
+    Nachteile: 
+
+    Zugriff auf Element n läuft über die Elemente 0,1,..., n-1 und dauert daher länger als der direkte Zugriff auf ein Element eines Arrays.
+
+    --> Auslesen von Elementen dauert länger
+
+    Einfach verkettete Liste
+
+    Vorteile:
+
+    Besonders am Anfang der Liste können schnell Elemente hinzugefügt werden.
+
+    Doppelt verkettete Liste 
+
+    Vorteile:
+
+    Im Gegensatz zur einfach verketteten Liste kann auf die zweite Hälfte der Liste schneller zugegriffen werden.
+
+    --> Schnelleres Auslesen aus der zweiten Hälfte der Liste
+
+    Durch doppelte Verkettung kann Element mit Vorgänger und Nachfolger verglichen werden.
+
+    --> effizienteres Sortieren möglich als auf einfach verketteter Liste
+
+e)  Das Problem ist, dass für jedes Element x der Liste die Methode get(int index) aufgerufen wird, welches für jedes Element wieder bei Head beginnt nach Index i zuz suchen.
+
+    Also wächst die Laufzeit der Schleife für wachsende i. Überschreitet i allerdings die Grenze size/2, so wird die Laufzeit für wachsende i wieder kleiner (durch Optimierung aus d)).
+
