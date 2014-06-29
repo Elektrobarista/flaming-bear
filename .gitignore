@@ -1,5 +1,4 @@
 /bin/
 /src/*.class
 /src/*.~ava
-
-/aktuelleAufgaben/a.txt
+/aktuelleAufgaben/*.class

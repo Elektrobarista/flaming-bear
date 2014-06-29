@@ -1,4 +1,7 @@
 public class Debugger{
+  public static void main (String[]args){
+    int a=test(13,2);
+  } 
   public static int test ( int start , int basis ) {
     int result=start ;
     int stopvalue=start ;
