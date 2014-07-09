@@ -1,0 +1,13 @@
+a)
+Wir verwenden ein Observer-Pattern, da dort die Änderung von Objekten ständig überwacht werden
+und wir die Uhrzeiten schliesslich minütlich aktualisieren müssen.
+Auch eine Erweiterung ist hier einfach möglich.
+
+c)
+Die Klassen digitaleAnzeige und analogeAnzeige implementieren das Interface Observer, dadurch bemerken sie,
+sobald der Zeitserver sich ändert. Daraufhin führen sie die Methode update aus, die die Werte
+für hour und min von Zeitserver übernimmt. Danach wird die Methode displayValue aufgerufen dadurch dann
+die neuen Werte anzeigt.
+Wird die Methode changeTime einer der beiden Anzeigen aufgerufen, so wird dadurch die Zeit des Zeitservers 
+geändert, da die beiden Anzeigen jede Änderung des Zeitservers mitbekommen werden daraufhin wieder die Methoden
+displayValue der Anzeigen aufgerufen.
