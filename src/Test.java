@@ -7,6 +7,7 @@ public class Test {
 		Prime test = new Prime();
 		
 		test.calc(10000000019L);
+		//Test
 	}
 
 }
