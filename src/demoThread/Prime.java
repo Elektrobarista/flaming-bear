@@ -1,5 +1,6 @@
+package demoThread;
 
-public class Prime {
+public class Prime implements Runnable {
 	
 	public void calc(long x) {
 		 long limit = x/2;
@@ -23,7 +24,10 @@ public class Prime {
 		System.out.println("Es wurden " + (end-begin) + " Nanosekunden zur Berechnung benötigt");
 	}
 
-
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		calc(19);
 	}
 
 }
