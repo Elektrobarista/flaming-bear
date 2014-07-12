@@ -4,9 +4,9 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		Thread test = new Thread();
+		Prime test = new Prime();
 		
-		test.prime(10000000019L);
+		test.calc(10000000019L);
 	}
 
 }

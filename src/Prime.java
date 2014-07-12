@@ -1,7 +1,7 @@
 
-public class Thread {
+public class Prime {
 	
-	public void prime(long x){
+	public void calc(long x){
 		 long limit = x/2;
 		 long counter =2;
 		 boolean result = false;
