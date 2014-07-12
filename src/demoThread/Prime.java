@@ -2,7 +2,13 @@ package demoThread;
 
 public class Prime implements Runnable {
 	
-	public void calc(long x) {
+	long x;
+	
+	public Prime(long x){
+		this.x = x;
+	}
+	
+	public void calc() {
 		 long limit = x/2;
 		 long counter =2;
 		 boolean result = false;
@@ -27,7 +33,7 @@ public class Prime implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		calc(19);
+		calc();
 	}
 
 }
