@@ -23,8 +23,12 @@ public class Test {
 		*/
 		//ArrayList<Thread> t = null;
 		//t.add(new Thread());
-		Prime test = new Prime(100);
-		System.out.println(test.isPrime(10,4));
+		Prime test = new Prime(13);
+		long begin = System.nanoTime();
+		System.out.println(test.isPrime(10007,7));
+		long end = System.nanoTime();
+		System.out.println(end-begin);
+		
 		
 	}
 
