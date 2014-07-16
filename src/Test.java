@@ -7,7 +7,7 @@ public class Test {
 
 		Prime test = new Prime();
 		
-		test.calc(1000000008);
+		test.calc(10007);
 
 		
 		
