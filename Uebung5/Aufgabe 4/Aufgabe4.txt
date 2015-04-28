@@ -1,5 +1,0 @@
-Aufgabe 2 
-a)
-Die Prüfung wird hier als assoziierte Klasse modeliert, da sie ja eine Verbindung von Student und Veranstaltung darstellt.
-Ohne Student und Veranstaltung gäbe es keine Prüfung.
-Student und Veranstaltung stehen somit durch die Prüfung in einer Berziehung miteinander daher folgt die modellierung als Assotiationsklasse.
