@@ -8,9 +8,9 @@ public class Section {
 		return content;
 	}
 	
-	public void setContent(StringBuilder content) {
-		this.content = content;
-	}
+	public void setContent(StringBuilder content) {							//Keine Ahnung, ob man das braucht. habe mal gelernt, dass man Getter und Setter 
+		this.content = content;                                            //automatisch anlegen soll, sobald die Variable "privat ist. Der Getter wird mit der Methode
+	}                                                                     //toString aber sowieso mehr oder weniger ersetzt und wie sinnvoll hier ein Setter ist, ist auch fraglich
 	
 	public void addCVLine(String val1, String val2)throws IllegalArgumentException{
 			if (!val2.equals("")){
@@ -21,14 +21,19 @@ public class Section {
 			}
 		
 	}
-	public void addCVEntry(String... vals){
-		/* Wahrscheinlich mit einer for-each Schleife
-		 * zu lösen. Erst prüfen ob leer, dann auf die
-		 * ersten beiden Strings testen. Ist das alles
-		 * ok, mit einer for-each Schleife dem StringBuilder
-		 * hinzufügen.
-		 */
-		
+	public void addCVEntry(String... vals)throws IllegalArgumentException{
+		if (vals.length <= 6 && (!vals[0].equals("") && !vals[1].equals(""))){ //Überprüfung, ob weniger als 6 Argumente vorhanden sind und die ersten beiden NICHT leer sind
+			content.append("\n\\cventry");
+			for (String s: vals) {		    								  //For-Each Schleife, die alle Elemente der Reihe nach iteriert und dem String "content" anfügt
+				content.append("{" + s + "}"); 
+			}
+		}
+		else{
+			throw new IllegalArgumentException("Erste zwei Argumente sind leer, oder mehr als 6 Argumente");
+		}		
+	}
+	public String toString(){
+		return content.toString();
 	}
 	
 
