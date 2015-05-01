@@ -8,12 +8,15 @@ private String lastName;
 private static String style = new String( Style.Casual.toString().toLowerCase());
 private String colorScheme = new String( Color.Black.toString().toLowerCase());;
 private String layout = new String("geometry");
+private String sectionCollection[];
 private int sectionNumber;
-private Section section;//???Fraglich???
+
 
 public CurriculumVitae(int sections){
 	this.sectionNumber = sections;
+	this.sectionCollection = new String[sections-1];
 }
+
 
 public void setFirstName(String firstName) {
 	this.firstName = firstName;
@@ -35,8 +38,11 @@ public void setLayout(String layout) {
 	this.layout = layout;
 }
 
-//Ich habe bisher noch keine Ahung, was diese Methode genau machen soll
+
 public void setSection(int number, Section section){
+	if(number <= sectionNumber && number  >= 0){
+		this.sectionCollection[number] = section.toString();
+	}
 	
 }
 
@@ -57,6 +63,13 @@ public void setSection(int number, Section section){
 
 
 	public static void main(String[] args) {
+		CurriculumVitae cu = new CurriculumVitae(4);
+		Section n = new Section("testname");
+		n.addCVLine("test1","test2");
+		n.addCVEntry("t","g","h","q","j","k");
+		cu.setSection(0,n);
+		System.out.println(cu.sectionCollection.length);
+		System.out.println(cu.sectionCollection[0]);
 		
 	
 
