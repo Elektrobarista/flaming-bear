@@ -10,6 +10,7 @@ private String colorScheme = new String( Color.Black.toString().toLowerCase());;
 private String layout = new String("geometry");
 private String sectionCollection[];
 private int sectionNumber;
+private StringBuilder content = new StringBuilder("");
 
 
 public CurriculumVitae(int sections){
@@ -46,6 +47,14 @@ public void setSection(int number, Section section){
 	
 }
 
+public String getCV() throws IncompleteCVException{ // Exception Klasse muss noch geschrieben werden
+	if ((style != ""||style != null) && (colorScheme != "" || colorScheme != null)&& (layout != "" || layout != null )){
+		//Hier wird der Lebenslauf generiert
+	}
+	
+	
+	return content.toString();
+}
 
 
 
