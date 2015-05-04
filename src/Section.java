@@ -4,7 +4,7 @@
 public class Section {
 	private StringBuilder content = new StringBuilder("");
 	public Section(String name){
-		content.append("\\section{" + name + "}");
+		content.append("\n\\section{" + name + "}");
 	}
 	
 	public StringBuilder getContent() {
