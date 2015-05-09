@@ -1,5 +1,10 @@
 import java.io.IOException;
 import java.io.Reader;
+/**
+ * 
+ * @author Nina
+ *
+ */
 
 public class CaesarReader extends java.io.Reader{
 	private Reader base;

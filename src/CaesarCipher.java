@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * @author Nina
+ *
+ */
 public class CaesarCipher {
 	private int offset;
 	public CaesarCipher(int offset){
