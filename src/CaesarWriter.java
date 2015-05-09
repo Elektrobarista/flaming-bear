@@ -5,7 +5,6 @@ import java.io.Writer;
  * @author Nina
  *
  */
-
 public class CaesarWriter extends java.io.Writer{
 	private Writer base;
 	private CaesarCipher caesar;
