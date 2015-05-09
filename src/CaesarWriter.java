@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.Writer;
 
+
 public class CaesarWriter extends java.io.Writer{
 	private Writer base;
 	private CaesarCipher caesar;
@@ -24,6 +25,7 @@ public class CaesarWriter extends java.io.Writer{
 
 	@Override
 	public void close() throws IOException {
+		
 		// TODO Auto-generated method stub
 		
 	}	
