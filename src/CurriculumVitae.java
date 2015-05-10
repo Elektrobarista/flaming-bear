@@ -1,6 +1,17 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class CurriculumVitae {
+
+public class CurriculumVitae implements Serializable{
 	
+private static final long serialVersionUID = 1003450186326955000L;
+
 private enum Color{Black,Grey,Orange,Purple,Red,Green,Blue};
 private enum Style{Casual,Classic,Oldstyle,Banking};
 private String firstName;
@@ -51,7 +62,7 @@ public String getCV() throws IncompleteCVException{
 	if (!(style.equals("")) && !(colorScheme.equals("")) && !(layout.equals("")) ){
 		content.append("\\documentclass[11pt, a4paper]{moderncv} \n\\moderncvtheme[" + colorScheme +"]" + "{" + style +"}");
 		content.append("\n\\usepackage[german]{babel}\n\\usepackage[utf8]{inputenc}\n\\usepackage{" + layout + "}");
-		content.append("\n\\firstname{" + firstName + "}" + "\n\\firstname{" + lastName + "}\n\\begin{document}\n\\makecvtitle");
+		content.append("\n\\firstname{" + firstName + "}" + "\n\\lasttname{" + lastName + "}\n\\begin{document}\n\\makecvtitle");
 		for(int i = 0; i <= sectionCollection.length - 1; i++){
 			content.append(sectionCollection[i]);
 		}
@@ -67,44 +78,38 @@ public String getCV() throws IncompleteCVException{
 	return content.toString();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public static void main(String[] args) throws IncompleteCVException {
-		CurriculumVitae cu = new CurriculumVitae(3);
-		Section contact = new Section("Kontaktdaten");
-		Section edu = new Section("Ausbildung");
-		Section lang = new Section("Sprachen");
-		contact.addCVLine("", "Sesamstraße");
-		contact.addCVLine("", "12345 Muppet Show");
-		contact.addCVLine("\\mobilesymbol", "+ 00 123 4567890");
-		contact.addCVLine("\\emailsymbol", "\\href{mailto:kermit@muppetshow.de}{kermit@muppetshow.de");
-		edu.addCVEntry("10/2012 --heute","Studium der Informatik","Johannes Gutenberg-Universität Mainz");
-		edu.addCVEntry("10/2005 -- 5/2012","Abitur","Muppet-Gymnasium","Note: 1,3");
-		lang.addCVLine("Englisch", "Muttersprache");
-		lang.addCVLine("Deutsch","Fließend in Wort und Schrift" );
-		cu.setSection(0,contact);
-		cu.setSection(1,edu);
-		cu.setSection(2,lang);
-		cu.setFirstName("Kermit");
-		cu.setLastName("der Frosch");
-		
-		System.out.println(cu.getCV());
-		
-	
-
+public void saveCV(File target){
+	ObjectOutputStream out;
+	try {
+		out = new ObjectOutputStream(new FileOutputStream(target));	
+		out.writeObject(this);	
+		out.close();
 	}
+catch (FileNotFoundException e) {
+	e.printStackTrace();
+} catch (IOException e) {
+	e.printStackTrace();
+}
+}
+
+public static CurriculumVitae loadCV(File source) {
+	CurriculumVitae loaded = null;
+	ObjectInputStream in;
+	try {
+		in= new ObjectInputStream(new FileInputStream(source));
+	    try {
+			loaded = (CurriculumVitae)in.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	    in.close();
+		
+	} catch (FileNotFoundException e) {	
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	return loaded;
+}
 
 }
