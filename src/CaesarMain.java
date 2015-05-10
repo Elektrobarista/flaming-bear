@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.StringReader;
 /**
- * 
+ * This class tests the implemented cipher algorithm.
  * @author Nina
  *
  */
