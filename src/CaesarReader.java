@@ -1,14 +1,27 @@
 import java.io.IOException;
 import java.io.Reader;
 /**
- * 
+ * A reader to read encoded messages.
  * @author Nina
  *
  */
 public class CaesarReader extends java.io.Reader{
+	
+	/**
+	 * The reader this reader is wrapped around.
+	 */
 	private Reader base;
+	
+	/**
+	 * The en-/decoder for this class.
+	 */
 	private CaesarCipher caesar;
 
+	/**
+	 * Creates a new CaesarReader.
+	 * @param base The reader this new reader will be wrapped around.
+	 * @param caesar The encoder/decoder to be used by this reader.
+	 */
 	public CaesarReader(Reader base, CaesarCipher caesar){
 		this.base = base;
 		this.caesar = caesar;	
