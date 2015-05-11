@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.io.Reader;
 /**
  * A reader to read encoded messages.
- * @author Nina
- *
  */
 public class CaesarReader extends java.io.Reader{
 	

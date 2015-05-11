@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.io.Writer;
 /**
  * A Writer to write encoded messages.
- * @author Nina
- *
  */
 public class CaesarWriter extends java.io.Writer{
 	

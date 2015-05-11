@@ -3,8 +3,6 @@ import java.io.StringWriter;
 import java.io.StringReader;
 /**
  * This class tests the implemented cipher algorithm.
- * @author Nina
- *
  */
 public class CaesarMain {
 	public static void main(String[] args) throws IOException {

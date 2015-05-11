@@ -1,9 +1,14 @@
 import java.io.File;
+import java.util.Scanner;
 
-
+/*
+ * Main Class to create the CV
+ */
 public class Main {
 
 	public static void main(String[] args) throws IncompleteCVException, ClassNotFoundException {
+		Scanner sc = new Scanner(System.in);
+		String user;
 		CurriculumVitae cu = new CurriculumVitae(3);
 		Section contact = new Section("Kontaktdaten");
 		Section edu = new Section("Ausbildung");
@@ -21,11 +26,14 @@ public class Main {
 		cu.setSection(2,lang);
 		cu.setFirstName("Kermit");
 		cu.setLastName("der Frosch");
-		File f = new File("C:"+File.separator+"Users"+File.separator+"Alex"+File.separator+"cv.gz");
+		System.out.println("Name des Userverzeichnisses eingeben:");
+		user = sc.nextLine();
+		sc.close();
+		File f = new File("C:"+File.separator+"Users"+File.separator+user+File.separator+"cv.gz");
+		File g= new File("C:"+File.separator+"Users"+File.separator+user+File.separator+"cv.tex");
 		cu.saveCV(f);
-		
-		System.out.println(cu.loadCV(f).getCV());
-
+		cu.loadCV(f).writeCV(g);
+		System.out.println("done");
 	}
 
 }

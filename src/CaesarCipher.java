@@ -1,7 +1,5 @@
 /**
- * A class to encode and decode single characters.
- * @author Nina
- *
+ * A class to encode and decode single characters. *
  */
 public class CaesarCipher {
 	
@@ -35,6 +33,11 @@ public class CaesarCipher {
 		}
 		return cipher;
 	}
+	/**
+	 * decrypts a character.
+	 * @param c The character to encrypt. 
+	 * @return The decrypted character.
+	 */
 	public char decode(char c){
 		char text = c;
 		// uppercase letters
