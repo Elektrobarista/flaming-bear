@@ -4,8 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 
 public class CurriculumVitae implements Serializable{
@@ -81,7 +84,8 @@ public String getCV() throws IncompleteCVException{
 public void saveCV(File target){
 	ObjectOutputStream out;
 	try {
-		out = new ObjectOutputStream(new FileOutputStream(target));	
+		out = new ObjectOutputStream(new GZIPOutputStream((new FileOutputStream(target))));
+		//out = new ObjectOutputStream(new FileOutputStream(target));	
 		out.writeObject(this);	
 		out.close();
 	}
@@ -96,7 +100,7 @@ public static CurriculumVitae loadCV(File source) {
 	CurriculumVitae loaded = null;
 	ObjectInputStream in;
 	try {
-		in= new ObjectInputStream(new FileInputStream(source));
+		in= new ObjectInputStream(new GZIPInputStream((new FileInputStream(source))));
 	    try {
 			loaded = (CurriculumVitae)in.readObject();
 		} catch (ClassNotFoundException e) {

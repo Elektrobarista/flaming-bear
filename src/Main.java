@@ -21,7 +21,7 @@ public class Main {
 		cu.setSection(2,lang);
 		cu.setFirstName("Kermit");
 		cu.setLastName("der Frosch");
-		File f = new File("C:"+File.separator+"Users"+File.separator+"Alex"+File.separator+"cv.es");
+		File f = new File("C:"+File.separator+"Users"+File.separator+"Alex"+File.separator+"cv.gz");
 		cu.saveCV(f);
 		
 		System.out.println(cu.loadCV(f).getCV());
