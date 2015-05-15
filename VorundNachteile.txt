@@ -1,0 +1,2 @@
+Vorteil : Liest schneller, da erst im Puffer gespeichert wird und dann in den Speicher.
+Nachteil: Stürzt das Programm ab, ist alles weg, da der Inhalt im Puffer liegt und noch nicht im Speicher.

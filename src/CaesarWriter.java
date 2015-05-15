@@ -1,14 +1,25 @@
 import java.io.IOException;
 import java.io.Writer;
 /**
- * 
- * @author Nina
- *
+ * A Writer to write encoded messages.
  */
 public class CaesarWriter extends java.io.Writer{
+	
+	/**
+	 * The writer this writer is wrapped around.
+	 */
 	private Writer base;
+	
+	/**
+	 * The en-/decoder for this class.
+	 */
 	private CaesarCipher caesar;
 	
+	/**
+	 * Creates a new CaesarWriter.
+	 * @param base The writer this new writer will be wrapped around.
+	 * @param caesar The encoder/decoder to be used by this writer.
+	 */
 	public CaesarWriter(Writer base, CaesarCipher caesar){
 		this.base = base;
 		this.caesar = caesar;
