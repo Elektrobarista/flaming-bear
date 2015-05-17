@@ -21,14 +21,27 @@ public class CaesarCipher {
 	 * @param c The character to encrypt. 
 	 * @return The encrypted character.
 	 */
+	// Correction: You forgot the case of negative offsets here
 	public char encode(char c){
 		char cipher = c;
 		// uppercase letters
 		if ((int)c>64 && (int)c<91){
+			// Correction: For negative offsets
+			//if ((int) c - 65 + offset < 0){
+			//	cipher = (char) (((c-65+offset)%26)+65+26);
+			//} else {
+			//	cipher = (char) (((c-65+offset)%26)+65);
+			//}
 			cipher = (char) (((c-65+offset)%26)+65);
 		}
 		// lowercase letters
 		if ((int)c>96 && (int)c<123){
+			// Correction: For negative offsets
+			//if ((int) c - 97 + offset < 0){
+			//	cipher = (char) (((c-97+offset)%26)+97+26);
+			//} else {
+			//	cipher = (char) (((c-97+offset)%26)+97);
+			//}
 			cipher = (char) (((c-97+offset)%26)+97);
 		}
 		return cipher;
