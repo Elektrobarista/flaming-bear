@@ -2,3 +2,6 @@
 /src/*.class
 /src/*.~ava
 /aktuelleAufgaben/*.class
+doc/CurriculumVitae.html
+doc/Main.html
+src/Test.java
