@@ -14,8 +14,11 @@ import java.io.Writer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-/*
+
+/**
  * Contains the sections and content of the Curriculum Vitae an provides the methods to fill the CV with content
+ * @author Alex Lind, Nina Metzinger, Christel Sax
+ *
  */
 public class CurriculumVitae implements Serializable{
 	
@@ -28,8 +31,8 @@ private String lastName;
 private String style = new String( Style.Casual.toString().toLowerCase());
 private String colorScheme = new String( Color.Black.toString().toLowerCase());;
 private String layout = new String("geometry");
-private String sectionCollection[];
 private int sectionNumber;
+private String sectionCollection[];
 private StringBuilder content = new StringBuilder("");
 
 
@@ -58,7 +61,6 @@ public void setColorScheme(String colorSheme) {
 public void setLayout(String layout) {
 	this.layout = layout;
 }
-
 
 public void setSection(int number, Section section){
 	if(number <= sectionNumber && number  >= 0){
@@ -155,6 +157,55 @@ public void writeCV(File target){
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
 	}
+	
+}
+/**
+ * Masks the Charakters " " ", "\n","/" and "\" to a JSON friendly String
+ * Example : \n -> \\n
+ * @param s -String to mask
+ * @return - returns the JSON friendly masked String
+ */
+public static String escpapeJSON(String s){
+	s = s.replace("\\", "\\\\");
+	s = s.replace("\"", "\\\"");
+	s = s.replace("\\n", "\\n");
+	s = s.replace("/", "\\/");
+	
+	return s;	
+}
+/**
+ * Revert the JSON marked Charakters " " ", "\n","/" and "\" to a normal String
+ * Example : \\n -> \n
+ * @param s -String to revert the mask
+ * @return - returns the normal demasked String
+ */
+public static String stripJSON(String s){
+	s = s.replace("\\\\", "\\");
+	s = s.replace("\\\"", "\"");
+	s = s.replace("\\n", "\\n");
+	s = s.replace("\\/", "/");
+	
+	return s;	
+}
+
+public String getJSON() throws IncompleteCVException{
+	StringBuilder json = new StringBuilder("{\n");
+	json.append("   \"firstname\" : " + "\""+this.firstName+"\"" +"\n");
+	json.append("   \"lastname\" : " + "\""+this.lastName+"\"" +"\n");
+	json.append("   \"sectionNumber\" : " + this.sectionNumber +"\n");
+	json.append("   \"sectionCollection\" :  [\n");
+	for(int i = 0; i<=sectionNumber-1; i++){
+		json.append("\""+CurriculumVitae.escpapeJSON(this.sectionCollection[i])+"\" ,\n");
+	}
+	json.append("   ]\n");
+	json.append("\"content\" : \""+ CurriculumVitae.escpapeJSON(this.getCV()) +"\"");
+	
+	
+	
+	
+	
+	json.append("\n}");
+	return json.toString();
 	
 }
 }
