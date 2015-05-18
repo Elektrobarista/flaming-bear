@@ -160,7 +160,7 @@ public void writeCV(File target){
 	
 }
 /**
- * Masks the Charakters " " ", "\n","/" and "\" to a JSON friendly String
+ * Masks the Charac0ters " " ", "\n","/" and "\" to a JSON friendly String
  * Example : \n -> \\n
  * @param s -String to mask
  * @return - returns the JSON friendly masked String
