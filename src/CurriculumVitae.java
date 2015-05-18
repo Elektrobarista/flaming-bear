@@ -174,7 +174,7 @@ public static String escpapeJSON(String s){
 	return s;	
 }
 /**
- * Revert the JSON marked Charakters " " ", "\n","/" and "\" to a normal String
+ * Revert the JSON marked Characters " " ", "\n","/" and "\" to a normal String
  * Example : \\n -> \n
  * @param s -String to revert the mask
  * @return - returns the normal demasked String
@@ -187,7 +187,11 @@ public static String stripJSON(String s){
 	
 	return s;	
 }
-
+/**
+ * Converts CV object to JSON
+ * @return -String with JSON content 
+ * @throws IncompleteCVException
+ */
 public String getJSON() throws IncompleteCVException{
 	StringBuilder json = new StringBuilder("{\n");
 	json.append("   \"firstname\" : " + "\""+this.firstName+"\"" +"\n");
@@ -199,11 +203,6 @@ public String getJSON() throws IncompleteCVException{
 	}
 	json.append("   ]\n");
 	json.append("\"content\" : \""+ CurriculumVitae.escpapeJSON(this.getCV()) +"\"");
-	
-	
-	
-	
-	
 	json.append("\n}");
 	return json.toString();
 	
