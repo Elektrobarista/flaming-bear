@@ -24,8 +24,8 @@ public class CurriculumVitae implements Serializable{
 	
 private static final long serialVersionUID = 1003450186326955000L;
 
-private enum Color{Black,Grey,Orange,Purple,Red,Green,Blue};
-private enum Style{Casual,Classic,Oldstyle,Banking};
+public enum Color{Black,Grey,Orange,Purple,Red,Green,Blue};
+public enum Style{Casual,Classic,Oldstyle,Banking};
 private String firstName;
 private String lastName;
 private String style = new String( Style.Casual.toString().toLowerCase());

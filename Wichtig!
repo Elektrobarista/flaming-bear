@@ -1,0 +1,6 @@
+Das aktuelle Übungsblatt wird im ordner "src" bearbeitet. So kann jedes Übungsblatt im gleichen Projekt bearbeite werden,
+was die arbeit mit Eclipse etwas erleichtert. Für die Abgabe werden dann die fertigen Versionen der Dateien manuell aus
+dem src kopiert und in den jeweiligen Abgabeordner kopiert. Es werden dabei NUR die Dateien kopiert, nicht die Ordner.
+
+Bitte die Dateien nicht im src Ordner komplilieren. sonst sind dort tausend .class Dateien.
+Eclipse kompiliert autamtisch in den bin Ordner, der bei git auf ignore gesetzt wird, also nur bei jedem lokal sichtbar ist.
