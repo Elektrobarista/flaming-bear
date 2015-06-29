@@ -2,18 +2,22 @@
 public class ProteinDomain {
 	private int start;
 	private int end;
+	Protein pro;
+	Domain dom;
 	
 	public ProteinDomain(Protein protein, Domain domain, int start, int end){
 		this.start = start;
 		this.end = end;
+		this.pro = protein;
+		this.dom = domain;
 	}
 	
 	public Protein getProtein(){
-		return null;
+		return pro;
 	}
 	
 	public Domain getDomain(){
-		return null;
+		return dom;
 	}
 	
 	public int getStart(){

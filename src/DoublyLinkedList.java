@@ -1,3 +1,11 @@
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
+/**
+ * Doubly linked list with Iterator usage.
+ * Sheet 10 Exercise 2
+ * @author Chrissi Sax, Nina Metzinger, Alexander Lind
+ */
 /**
  * Implementation of a doubly linked list.
  * 
@@ -7,7 +15,7 @@
  * @param <E>
  *            type of the list elements
  */
-public class DoublyLinkedList<E> {
+public class DoublyLinkedList<E> implements Iterable<E>{
 
 	/**
 	 * Internal representation of a single list element.
@@ -229,5 +237,133 @@ public class DoublyLinkedList<E> {
 		for (int i = 0; i < this.size() - index - 1; i++)
 			current = current.prev;
 		return current;
+	}
+	@Override
+	public Iterator<E> iterator() {
+		return new DLLIterator(head);
+	}
+	
+	public Iterator<E> listIterator(){
+		return new DLLIterator(head);
+	}
+	
+	class DLLIterator implements ListIterator<E> {
+		Node nextn;			// next element
+		Node prevn;			// previous element	
+		Node lastReturn;	// last element returned
+		Node head;			// head-node of the binary tree
+		int pos;			// current position of cursor
+		/**
+	     * Constructor. Setting position in front of first element.
+	     * @param head head-element of the doubly linked list
+	     */
+		DLLIterator(Node head) {
+			this.head = head;
+			nextn = head;
+			prevn = null;
+			pos = 0;
+		}
+		/**
+	     * Checks if there is an element left of the cursor.
+	     * @return true if this element exists
+	     */
+		public boolean hasPrevious() {
+			return (prevn != null);
+		}
+		/**
+	     * Returns previous element and moves cursor one element to the left.
+	     * @return previous element
+	     * @throws NoSuchElementException
+	     */
+		public E previous() {
+			if (prevn == null)
+				throw new NoSuchElementException();
+			E temp = prevn.val;
+			lastReturn = prevn;
+			nextn = prevn;
+			prevn = nextn.prev;	
+			return temp;
+		}
+		/**
+	     * Returns index of next element or size if cursor at end of list.
+	     * @return index of next element or size
+	     */
+		public int nextIndex() {
+			if (nextn == null)
+				return size;
+			return pos;
+		}
+		/**
+	     * Returns index of previous element or size if cursor at end of list.
+	     * @return index of previous element or size
+	     */
+		public int previousIndex() {
+			if (prevn == null)
+				return size;
+			return pos-1;
+		}
+		/**
+	     * Sets value at last returned position.
+	     * @param e new value
+	     * @throws IllegalStateException if add or remove has already been called after last next/previous.
+	     */
+		public void set(E e) {
+			if (lastReturn == null)
+				throw new IllegalStateException();
+			lastReturn.val = e;
+		}
+		/**
+	     * Adds new value between previous and next element, behind cursor.
+	     * @param e new value
+	     */
+		public void add(E e) {
+			size++;
+			pos++;
+			Node temp = new Node(e,prevn,nextn);
+			nextn.prev=temp;
+			prevn.next=temp;
+			prevn=temp;
+			lastReturn = null;
+		}
+		/**
+	     * Checks if there is an element right of the cursor.
+	     * @return true if this element exists
+	     */
+		public boolean hasNext() {
+			return (nextn != null);
+		}
+		/**
+	     * Returns next element and moves cursor one element to the right.
+	     * @return next element
+	     * @throws NoSuchElementException
+	     */
+		public E next() {
+			if (nextn == null)
+				throw new NoSuchElementException();
+			E temp = nextn.val;
+			lastReturn = nextn;
+			prevn = nextn;
+			nextn = prevn.next;			
+			return temp;
+		}
+		/**
+	     * Removes value at last returned position.
+	     * @throws IllegalStateException if add or remove has already been called after last next/previous.
+	     */
+		public void remove() {
+			if (lastReturn == null)
+				throw new IllegalStateException();
+			size--;
+			if (lastReturn == prevn) {
+				pos--;
+				DoublyLinkedList.this.remove(pos);
+				prevn = prevn.prev;
+			}
+			if (lastReturn == nextn) {
+				DoublyLinkedList.this.remove(pos);
+				nextn = nextn.next;
+			}
+			lastReturn = null;
+		}
 	}
 }
